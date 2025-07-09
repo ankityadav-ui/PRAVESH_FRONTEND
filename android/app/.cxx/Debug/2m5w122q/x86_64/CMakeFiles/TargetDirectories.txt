@@ -1,0 +1,2 @@
+C:/Users/Ankit/Desktop/Ankit_git/final_parvesh/Frontend/android/app/.cxx/Debug/2m5w122q/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/Ankit/Desktop/Ankit_git/final_parvesh/Frontend/android/app/.cxx/Debug/2m5w122q/x86_64/CMakeFiles/rebuild_cache.dir

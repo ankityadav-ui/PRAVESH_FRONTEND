@@ -1,0 +1,2 @@
+C:/Users/shrih/OneDrive/Desktop/apk build/Frontend/android/app/.cxx/RelWithDebInfo/6n6j1m4v/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/shrih/OneDrive/Desktop/apk build/Frontend/android/app/.cxx/RelWithDebInfo/6n6j1m4v/armeabi-v7a/CMakeFiles/rebuild_cache.dir

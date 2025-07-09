@@ -1,0 +1,2 @@
+C:/Users/Ankit/Desktop/Ankit_git/final_parvesh/Frontend/android/app/.cxx/RelWithDebInfo/4r29g4o5/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/Ankit/Desktop/Ankit_git/final_parvesh/Frontend/android/app/.cxx/RelWithDebInfo/4r29g4o5/armeabi-v7a/CMakeFiles/rebuild_cache.dir
