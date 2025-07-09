@@ -83,7 +83,7 @@ class _LeaveFormHomePageState extends State<LeaveFormHomePage> {
               onSurface: colors.white,
             ),
             dialogBackgroundColor: colors.background,
-            dialogTheme: DialogTheme(
+            dialogTheme: DialogThemeData(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
