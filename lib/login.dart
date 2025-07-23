@@ -4,6 +4,8 @@ import 'package:pravesh_screen/widgets/herder_container.dart';
 import 'package:pravesh_screen/widgets/btn_name.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }

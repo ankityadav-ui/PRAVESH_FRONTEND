@@ -4,7 +4,7 @@ import 'package:pravesh_screen/app_colors_provider.dart';
 class HeaderContainer extends StatelessWidget {
   final String text;
 
-  const HeaderContainer({Key? key, required this.text}) : super(key: key);
+  const HeaderContainer({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {

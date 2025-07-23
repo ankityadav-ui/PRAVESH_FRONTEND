@@ -7,7 +7,7 @@ class ViewProfileScreen extends StatelessWidget {
   final String roomNo = "235";
   final String mobileNo = "7878356069";
 
-  ViewProfileScreen({super.key});
+  const ViewProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pravesh_screen/app_colors_provider.dart';
-import 'package:flutter/animation.dart';
 import 'package:pravesh_screen/widgets/color.dart';
 
 class Firstpage extends StatefulWidget {

@@ -5,14 +5,56 @@ import 'package:pravesh_screen/initialInfo/secondpage.dart';
 import 'package:pravesh_screen/initialInfo/thirdpage.dart';
 import 'package:pravesh_screen/widgets/color.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:pravesh_screen/home_screen.dart'; // <-- Add this import at top if not present
 
 class IntroPages extends StatefulWidget {
+  const IntroPages({super.key});
+
   @override
   State<IntroPages> createState() => _IntroPagesState();
 }
 
 class _IntroPagesState extends State<IntroPages> {
   final PageController _controller = PageController();
+  int currentPage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller.addListener(() {
+      final newPage = _controller.page?.round() ?? 0;
+      if (newPage != currentPage) {
+        setState(() {
+          currentPage = newPage;
+        });
+      }
+    });
+  }
+
+  void nextPage() {
+    if (currentPage < 2) {
+      _controller.nextPage(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    } else {
+      // On last page → navigate somewhere else if needed
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    }
+  }
+
+  void previousPage() {
+    if (currentPage > 0) {
+      _controller.previousPage(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +67,7 @@ class _IntroPagesState extends State<IntroPages> {
         color: IntroBackground,
         child: Stack(
           children: [
-            // Main PageView
+            // PageView
             PageView(
               controller: _controller,
               physics: const ClampingScrollPhysics(),
@@ -40,10 +82,10 @@ class _IntroPagesState extends State<IntroPages> {
 
             // Page Indicator
             Positioned(
-              left: width * 0.375, // Centering it with some flexibility
+              left: width * 0.375,
               bottom: height * 0.15,
               child: SizedBox(
-                width: width * 0.25, // Container width for indicator space
+                width: width * 0.25,
                 child: SmoothPageIndicator(
                   controller: _controller,
                   count: 3,
@@ -58,6 +100,40 @@ class _IntroPagesState extends State<IntroPages> {
                     paintStyle: PaintingStyle.fill,
                   ),
                 ),
+              ),
+            ),
+
+            // Arrow Buttons
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: height * 0.05,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Back Arrow
+                  IconButton(
+                    icon: Icon(
+                      Icons.arrow_back_ios,
+                      color: currentPage == 0 ? colors.grey : colors.green,
+                      size: width * 0.07,
+                    ),
+                    onPressed:
+                        currentPage == 0 ? null : () => previousPage(),
+                  ),
+
+                  // Forward Arrow
+                  IconButton(
+                    icon: Icon(
+                      currentPage == 2
+                          ? Icons.check_circle_outline
+                          : Icons.arrow_forward_ios,
+                      color: colors.green,
+                      size: width * 0.07,
+                    ),
+                    onPressed: () => nextPage(),
+                  ),
+                ],
               ),
             ),
           ],

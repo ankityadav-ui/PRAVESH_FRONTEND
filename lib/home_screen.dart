@@ -8,6 +8,8 @@ import 'package:pravesh_screen/widgets/navbar.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final colors = appColors(context);

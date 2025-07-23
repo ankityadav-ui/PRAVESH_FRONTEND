@@ -3,7 +3,6 @@ import 'package:pravesh_screen/app_colors_provider.dart';
 import 'package:pravesh_screen/widgets/color.dart';
 import 'package:pravesh_screen/widgets/navbar.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:flutter/animation.dart';
 
 class Thirdpage extends StatefulWidget {
   const Thirdpage({super.key});

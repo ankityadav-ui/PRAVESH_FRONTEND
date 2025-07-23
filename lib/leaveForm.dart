@@ -82,7 +82,6 @@ class _LeaveFormHomePageState extends State<LeaveFormHomePage> {
               onPrimary: colors.white,
               onSurface: colors.white,
             ),
-            dialogBackgroundColor: colors.background,
             dialogTheme: DialogThemeData(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
@@ -92,8 +91,7 @@ class _LeaveFormHomePageState extends State<LeaveFormHomePage> {
           ),
           child: MediaQuery(
             data: MediaQuery.of(context).copyWith(
-              textScaleFactor: 1.0,
-              alwaysUse24HourFormat: true,
+              alwaysUse24HourFormat: true, textScaler: TextScaler.linear(1.0),
             ),
             child: child ?? const SizedBox(),
           ),
