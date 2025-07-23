@@ -20,7 +20,7 @@ class _LeaveFormHomePageState extends State<LeaveFormHomePage> {
     "name": "abc",
     "username": "ese",
     "user_id": "bt24cseXXX",
-    "phone_numebr": 123456789,
+    "phone_number": 123456789,
     "type": "exit"
   };
 
@@ -42,23 +42,48 @@ class _LeaveFormHomePageState extends State<LeaveFormHomePage> {
   }
 
   Future<bool> isWithinRadius() async {
-    if (!await Geolocator.isLocationServiceEnabled()) return false;
+    if (!await Geolocator.isLocationServiceEnabled()) {
+      _showErrorDialog(
+          'Location services are disabled. Please enable location services to continue.');
+      return false;
+    }
 
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) return false;
+      if (permission == LocationPermission.denied) {
+        _showErrorDialog(
+            'Location permission denied. Please grant location permission to continue.');
+        return false;
+      }
     }
-    if (permission == LocationPermission.deniedForever) return false;
 
-    Position position = await Geolocator.getCurrentPosition();
-    return Geolocator.distanceBetween(
-          position.latitude,
-          position.longitude,
-          targetLatitude,
-          targetLongitude,
-        ) <=
-        allowedRadius;
+    if (permission == LocationPermission.deniedForever) {
+      _showErrorDialog(
+          'Location permission is permanently denied. Please enable it in settings.');
+      return false;
+    }
+
+    try {
+      Position position = await Geolocator.getCurrentPosition();
+      double distance = Geolocator.distanceBetween(
+        position.latitude,
+        position.longitude,
+        targetLatitude,
+        targetLongitude,
+      );
+
+      if (distance > allowedRadius) {
+        _showErrorDialog(
+            'You are not within the allowed radius of the institute.');
+        return false;
+      }
+
+      return true;
+    } catch (e) {
+      _showErrorDialog('Error getting location: $e');
+      return false;
+    }
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -91,7 +116,8 @@ class _LeaveFormHomePageState extends State<LeaveFormHomePage> {
           ),
           child: MediaQuery(
             data: MediaQuery.of(context).copyWith(
-              alwaysUse24HourFormat: true, textScaler: TextScaler.linear(1.0),
+              alwaysUse24HourFormat: true,
+              textScaler: TextScaler.linear(1.0),
             ),
             child: child ?? const SizedBox(),
           ),
@@ -319,6 +345,22 @@ class _LeaveFormHomePageState extends State<LeaveFormHomePage> {
           ),
         ),
       ],
+    );
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Error'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
     );
   }
 
