@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pravesh_screen/initialInfo/intro_pages.dart';
 import 'package:pravesh_screen/widgets/herder_container.dart';
 import 'package:pravesh_screen/widgets/btn_name.dart';
+import 'package:pravesh_screen/warden_home_screen.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -32,7 +34,12 @@ class _LoginPageState extends State<LoginPage> {
         context,
         MaterialPageRoute(builder: (context) => IntroPages()),
       );
-    } else {
+    } else if (email == 'b' && password == 'c') {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => WardenHomeScreen()),
+    );
+  } else {
       setState(() {
         _errorMessage = 'Wrong ID or Password. Please try again!';
         _showError = true;
