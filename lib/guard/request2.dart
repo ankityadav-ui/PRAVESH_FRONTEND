@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:pravesh_screen/guard/request.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -150,14 +150,25 @@ class RequestStatusScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          Chip(
-            avatar: Icon(Icons.access_time_filled, color: pendingColor, size: 16),
-            label: Text('PENDING', style: TextStyle(color: pendingColor, fontWeight: FontWeight.bold)),
-            backgroundColor: pendingColor.withOpacity(0.15),
-            shape: const StadiumBorder(),
-            side: BorderSide(color: pendingColor.withOpacity(0.5)),
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-          ),
+          ActionChip(
+  avatar: Icon(Icons.access_time_filled, color: pendingColor, size: 16),
+  label: Text(
+    'PENDING',
+    style: TextStyle(color: pendingColor, fontWeight: FontWeight.bold),
+  ),
+  backgroundColor: pendingColor.withOpacity(0.15),
+  shape: const StadiumBorder(),
+  side: BorderSide(color: pendingColor.withOpacity(0.5)),
+  padding: const EdgeInsets.symmetric(horizontal: 8),
+  onPressed: () {
+    Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => RequestStatusSuccessScreen()),
+                );
+  },
+)
+,
           const SizedBox(height: 8),
           Text(
             'Waiting for Prof. Johnson to respond...',

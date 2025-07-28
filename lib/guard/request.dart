@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-// You can run this app on DartPad: https://dartpad.dev/
+import 'package:pravesh_screen/guard/new_visitor_managment.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,23 +17,23 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
         scaffoldBackgroundColor: const Color(0xFF1A1F2A),
         primaryColor: const Color(0xFF34D17B),
-        fontFamily: 'sans-serif', // Using a common, clean font
+        fontFamily: 'sans-serif',
         textTheme: const TextTheme(
           bodyLarge: TextStyle(color: Colors.white),
           bodyMedium: TextStyle(color: Colors.white70),
-          titleMedium: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          titleMedium:
+              TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           titleSmall: TextStyle(color: Colors.white70),
         ),
       ),
-      home: const RequestStatusScreen(),
+      home: const RequestStatusSuccessScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-/// The main screen widget that displays the visitor request status.
-class RequestStatusScreen extends StatelessWidget {
-  const RequestStatusScreen({super.key});
+class RequestStatusSuccessScreen extends StatelessWidget {
+  const RequestStatusSuccessScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -63,14 +62,13 @@ class RequestStatusScreen extends StatelessWidget {
           children: [
             _buildStatusCard(context),
             const SizedBox(height: 24),
-            _buildRegisterButton(),
+            _buildRegisterButton(context), // ✅ Pass context here
           ],
         ),
       ),
     );
   }
 
-  /// Builds the main status card.
   Widget _buildStatusCard(BuildContext context) {
     return Card(
       color: const Color(0xFF273348),
@@ -84,7 +82,7 @@ class RequestStatusScreen extends StatelessWidget {
             const SizedBox(height: 24),
             _buildDetailRow('MEETING WITH', 'Prof. Johnson'),
             const SizedBox(height: 16),
-            _buildDetailRow('REASON', 'd'),
+            _buildDetailRow('REASON', 'Discussion'),
             const SizedBox(height: 16),
             _buildDetailRow('REQUEST TIME', '07:56 PM'),
             const SizedBox(height: 24),
@@ -95,7 +93,6 @@ class RequestStatusScreen extends StatelessWidget {
     );
   }
 
-  /// Builds the header section with avatar and name.
   Widget _buildHeader() {
     return Row(
       children: [
@@ -134,7 +131,6 @@ class RequestStatusScreen extends StatelessWidget {
     );
   }
 
-  /// A reusable widget for displaying a detail row (e.g., "MEETING WITH").
   Widget _buildDetailRow(String label, String value) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,17 +156,12 @@ class RequestStatusScreen extends StatelessWidget {
     );
   }
 
-  /// Builds the central approval status section.
   Widget _buildApprovalStatus(BuildContext context) {
     final Color approvalColor = Theme.of(context).primaryColor;
     return Center(
       child: Column(
         children: [
-          Icon(
-            Icons.check_circle,
-            color: approvalColor,
-            size: 60,
-          ),
+          Icon(Icons.check_circle, color: approvalColor, size: 60),
           const SizedBox(height: 16),
           Chip(
             avatar: const Icon(Icons.check, color: Colors.white, size: 16),
@@ -195,13 +186,15 @@ class RequestStatusScreen extends StatelessWidget {
     );
   }
 
-  /// Builds the "Register New Visitor" button.
-  Widget _buildRegisterButton() {
+  Widget _buildRegisterButton(BuildContext context) { // ✅ context is passed here
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
-          // TODO: Implement navigation or action
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => GuardDashboardScreen()),
+          );
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFF34D17B),

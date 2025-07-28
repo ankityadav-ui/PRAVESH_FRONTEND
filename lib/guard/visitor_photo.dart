@@ -1,5 +1,6 @@
 import 'dart:ui' show PathMetric, PathMetrics;
 import 'package:flutter/material.dart';
+import 'package:pravesh_screen/guard/visitor_info.dart';
 
 void main() {
   runApp(const MyApp());
@@ -114,7 +115,16 @@ class CaptureVisitorPhotoScreen extends StatelessWidget {
             ElevatedButton.icon(
               icon: const Icon(Icons.camera_alt_rounded, size: 22),
               label: const Text('Capture Photo'),
-              onPressed: () {},
+              onPressed: () {
+
+                    Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => VisitorInformationScreen()),
+                );
+
+
+              },
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
                 backgroundColor: accentGreen,
@@ -206,8 +216,10 @@ class _DashedPathPainter extends CustomPainter {
       int dashIndex = 0;
       while (distance < metric.length) {
         final double len = dashPattern[dashIndex % dashPattern.length];
-        if (dashIndex % 2 == 0) { // Even index is a dash
-          dest.addPath(metric.extractPath(distance, distance + len), Offset.zero);
+        if (dashIndex % 2 == 0) {
+          // Even index is a dash
+          dest.addPath(
+              metric.extractPath(distance, distance + len), Offset.zero);
         }
         distance += len;
         dashIndex++;
