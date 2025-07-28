@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:pravesh_screen/QRGenerator.dart';
+import 'package:pravesh_screen/student/QRGenerator.dart';
 import 'package:pravesh_screen/app_colors_provider.dart';
 import 'package:pravesh_screen/cryptoUtils.dart';
 import 'package:uuid/uuid.dart';

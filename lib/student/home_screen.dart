@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pravesh_screen/QRGenerator.dart';
+import 'package:pravesh_screen/student/QRGenerator.dart';
 import 'package:pravesh_screen/app_colors_provider.dart';
-import 'package:pravesh_screen/exitForm.dart';
-import 'package:pravesh_screen/leaveForm.dart';
+import 'package:pravesh_screen/student/exitForm.dart';
+import 'package:pravesh_screen/student/leaveForm.dart';
 import 'package:pravesh_screen/themeNotifier.dart';
 import 'package:pravesh_screen/widgets/navbar.dart';
 import 'package:provider/provider.dart';

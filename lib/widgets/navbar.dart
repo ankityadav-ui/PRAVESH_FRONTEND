@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pravesh_screen/FAQscreen.dart';
+import 'package:pravesh_screen/student/FAQscreen.dart';
 import 'package:pravesh_screen/app_colors_provider.dart';
-import 'package:pravesh_screen/home_screen.dart';
-import 'package:pravesh_screen/notifications.dart';
-import 'package:pravesh_screen/profile.dart';
+import 'package:pravesh_screen/student/home_screen.dart';
+import 'package:pravesh_screen/student/notifications.dart';
+import 'package:pravesh_screen/student/profile.dart';
 
 class Navbar extends StatefulWidget {
   final int initialIndex;

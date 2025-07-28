@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pravesh_screen/initialInfo/intro_pages.dart';
 import 'package:pravesh_screen/widgets/herder_container.dart';
 import 'package:pravesh_screen/widgets/btn_name.dart';
-import 'package:pravesh_screen/warden_home_screen.dart';
+import 'package:pravesh_screen/warden/warden_home_screen.dart';
 
 
 class LoginPage extends StatefulWidget {
