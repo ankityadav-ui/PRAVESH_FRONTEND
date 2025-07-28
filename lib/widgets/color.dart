@@ -14,7 +14,15 @@ class AppColors {
   Color get grey => isDark ? const Color(0xff303030) : const Color(0xffe0e0e0);
   Color get box => isDark ? const Color(0xFF1E1E1E) : const Color(0xFFF0F0F0);
   Color get hintText => isDark ? Colors.white : const Color(0xFF1E1E1E);
+
+  // ✅ ADD THESE BELOW:
+  Color get bg => isDark ? const Color(0xff0D0D26) : const Color(0xFFFFFFFF);
+  Color get darkCard => isDark ? const Color(0xFF1C1C3A) : const Color(0xFFF0F0F0);
+  Color get darkBorder => isDark ? const Color(0xFF33334D) : const Color(0xFFE0E0E0);
+  Color get greyText => isDark ? Colors.grey[400]! : Colors.grey[700]!;
+  Color get blue => Colors.blueAccent;
 }
 
-Color IntroBackground = Color(0xff121212);
+// Optional static variables
+Color IntroBackground = const Color(0xff121212);
 Color introWhite = Colors.white;
