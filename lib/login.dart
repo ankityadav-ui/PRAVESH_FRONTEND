@@ -3,6 +3,9 @@ import 'package:pravesh_screen/initialInfo/intro_pages.dart';
 import 'package:pravesh_screen/widgets/herder_container.dart';
 import 'package:pravesh_screen/widgets/btn_name.dart';
 import 'package:pravesh_screen/warden/warden_home_screen.dart';
+import 'package:pravesh_screen/guard/new_visitor_managment.dart';
+import 'package:pravesh_screen/teacher/TEC_1.dart';
+
 
 
 class LoginPage extends StatefulWidget {
@@ -34,12 +37,22 @@ class _LoginPageState extends State<LoginPage> {
         context,
         MaterialPageRoute(builder: (context) => IntroPages()),
       );
-    } else if (email == 'b' && password == 'c') {
+    } else if (email == 'a' && password == 'c') {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => WardenHomeScreen()),
     );
-  } else {
+  }else if (email == 'a' && password == 'd') {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => GuardDashboardScreen()),
+    );
+  } else if (email == 'a' && password == 'e') {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => TeacherDashboardScreen()),
+    );
+  }else {
       setState(() {
         _errorMessage = 'Wrong ID or Password. Please try again!';
         _showError = true;

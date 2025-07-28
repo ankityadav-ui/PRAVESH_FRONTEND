@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pravesh_screen/app_colors_provider.dart';
 import 'package:pravesh_screen/warden/warden_students_outside_screen.dart';
 import 'package:pravesh_screen/warden/LateEntryRequestsScreen.dart';
+import 'package:pravesh_screen/warden/MyGate.dart';
 import 'package:pravesh_screen/themeNotifier.dart';
 import 'package:provider/provider.dart';
 
@@ -156,7 +157,7 @@ class WardenHomeScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => LateEntryRequestsScreen()),
+                      builder: (context) => MyGateVisitorsScreen()),
                 );
               },
             ),

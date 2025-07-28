@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pravesh_screen/guard/visitor_photo.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         brightness: Brightness.dark,
         scaffoldBackgroundColor: const Color(0xFF1A1F2A),
-        fontFamily: 'Inter', // A clean, modern font similar to the design
+        fontFamily: 'Inter',
       ),
       home: const GuardDashboardScreen(),
       debugShowCheckedModeBanner: false,
@@ -37,7 +38,6 @@ class GuardDashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Define colors from the design for easy access
     const cardColor = Color(0xFF273348);
     const accentGreen = Color(0xFF34D17B);
 
@@ -52,7 +52,7 @@ class GuardDashboardScreen extends StatelessWidget {
             const SizedBox(height: 30),
             _buildSectionTitle('Visitor Management'),
             const SizedBox(height: 16),
-            _buildRegisterButton(accentGreen),
+            _buildRegisterButton(context, accentGreen),
             const SizedBox(height: 30),
             _buildSectionTitle('Recent Requests'),
             const SizedBox(height: 16),
@@ -69,7 +69,6 @@ class GuardDashboardScreen extends StatelessWidget {
   Widget _buildHeader() {
     return Row(
       children: [
-        // The blank, light-colored avatar
         const CircleAvatar(
           radius: 28,
           backgroundColor: Color(0xFFE0E0E0),
@@ -83,7 +82,7 @@ class GuardDashboardScreen extends StatelessWidget {
               style: TextStyle(fontSize: 16, color: Colors.white70),
             ),
             Text(
-              _greeting, // Dynamic greeting based on current time
+              _greeting,
               style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
             ),
           ],
@@ -104,7 +103,7 @@ class GuardDashboardScreen extends StatelessWidget {
             ),
             SizedBox(height: 2),
             Text(
-              'Borkhedi, India', // Updated location
+              'Borkhedi, India',
               style: TextStyle(fontSize: 12, color: Colors.white60),
             ),
           ],
@@ -149,11 +148,18 @@ class GuardDashboardScreen extends StatelessWidget {
   }
 
   /// Builds the large, green "Register New Visitor" button.
-  Widget _buildRegisterButton(Color accentGreen) {
+  Widget _buildRegisterButton(BuildContext context, Color accentGreen) {
     return ElevatedButton.icon(
       icon: const Icon(Icons.person_add_alt_1_outlined, size: 22),
       label: const Text('Register New Visitor'),
-      onPressed: () {},
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const CaptureVisitorPhotoScreen(),
+          ),
+        );
+      },
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.white,
         backgroundColor: accentGreen,
@@ -246,7 +252,6 @@ class _StatCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // This container creates the faint circle behind the icon
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
@@ -272,7 +277,6 @@ class _StatCard extends StatelessWidget {
 }
 
 /// A private, reusable widget for the bottom action buttons.
-/// The height has been increased to better match the design.
 class _ActionButton extends StatelessWidget {
   const _ActionButton({
     required this.color,
@@ -293,7 +297,6 @@ class _ActionButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.white.withOpacity(0.85),
         backgroundColor: color,
-        // The height is increased here for a more accurate look
         minimumSize: const Size(double.infinity, 58),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         textStyle: const TextStyle(
