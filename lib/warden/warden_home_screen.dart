@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pravesh_screen/app_colors_provider.dart';
-import 'package:pravesh_screen/warden_students_outside_screen.dart';
-import 'package:pravesh_screen/LateEntryRequestsScreen.dart';
+import 'package:pravesh_screen/warden/warden_students_outside_screen.dart';
+import 'package:pravesh_screen/warden/LateEntryRequestsScreen.dart';
+import 'package:pravesh_screen/themeNotifier.dart';
+import 'package:provider/provider.dart';
 
 class WardenHomeScreen extends StatelessWidget {
   const WardenHomeScreen({super.key});
@@ -9,6 +11,7 @@ class WardenHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = appColors(context);
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
@@ -22,7 +25,7 @@ class WardenHomeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header: Greeting & Weather
+            // Header: Greeting & Theme Toggle
             Row(
               children: [
                 CircleAvatar(
@@ -52,25 +55,16 @@ class WardenHomeScreen extends StatelessWidget {
                   ],
                 ),
                 Spacer(),
-                // Column(
-                //   children: [
-                //     Icon(Icons.sunny, color: Colors.amber),
-                //     Text(
-                //       "22°",
-                //       style: TextStyle(
-                //         color: colors.white,
-                //         fontSize: screenWidth * 0.035,
-                //       ),
-                //     ),
-                //     Text(
-                //       "London",
-                //       style: TextStyle(
-                //         color: colors.white.withOpacity(0.7),
-                //         fontSize: screenWidth * 0.03,
-                //       ),
-                //     ),
-                //   ],
-                // )
+                // Theme Toggle Button
+                IconButton(
+                  onPressed: () => themeNotifier.toggleTheme(),
+                  icon: Icon(
+                    themeNotifier.isDarkMode
+                        ? Icons.light_mode
+                        : Icons.dark_mode,
+                    color: colors.white,
+                  ),
+                ),
               ],
             ),
             SizedBox(height: screenHeight * 0.03),
@@ -124,7 +118,13 @@ class WardenHomeScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                        Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => LateEntryRequestsScreen()),
+                );
+                    },
                     child: Text("Review Requests"),
                   ),
                 ],
@@ -138,10 +138,13 @@ class WardenHomeScreen extends StatelessWidget {
               label: "Students Outside (3)",
               icon: Icons.groups,
               color: Colors.blue,
-              onTap: () { Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => StudentsOutsideScreen()),
-    );},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => StudentsOutsideScreen()),
+                );
+              },
             ),
             SizedBox(height: screenHeight * 0.015),
             _wideButton(
@@ -149,10 +152,13 @@ class WardenHomeScreen extends StatelessWidget {
               label: "My Gate (2 Pending)",
               icon: Icons.shield,
               color: colors.green,
-              onTap: () {Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => LateEntryRequestsScreen()),
-    );},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => LateEntryRequestsScreen()),
+                );
+              },
             ),
             SizedBox(height: screenHeight * 0.025),
 

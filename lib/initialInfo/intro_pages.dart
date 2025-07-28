@@ -5,7 +5,7 @@ import 'package:pravesh_screen/initialInfo/secondpage.dart';
 import 'package:pravesh_screen/initialInfo/thirdpage.dart';
 import 'package:pravesh_screen/widgets/color.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:pravesh_screen/home_screen.dart'; // <-- Add this import at top if not present
+import 'package:pravesh_screen/student/home_screen.dart'; // <-- Add this import at top if not present
 
 class IntroPages extends StatefulWidget {
   const IntroPages({super.key});
