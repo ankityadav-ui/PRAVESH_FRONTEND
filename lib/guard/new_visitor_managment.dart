@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart'; // For time formatting
 import 'package:pravesh_screen/guard/visitor_photo.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-/// Main Application Widget
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       title: 'Guard Dashboard',
       theme: ThemeData(
         brightness: Brightness.dark,
-        scaffoldBackgroundColor: const Color(0xFF1A1F2A),
+        scaffoldBackgroundColor: const Color.fromARGB(255, 52, 59, 72),
         fontFamily: 'Inter',
       ),
       home: const GuardDashboardScreen(),
@@ -24,11 +24,13 @@ class MyApp extends StatelessWidget {
   }
 }
 
-/// The Guard Dashboard Screen
 class GuardDashboardScreen extends StatelessWidget {
   const GuardDashboardScreen({super.key});
-  
-  // Gets the correct greeting based on the current time of day.
+
+  String get _currentTime {
+    return DateFormat('hh:mm a').format(DateTime.now());
+  }
+
   String get _greeting {
     final hour = DateTime.now().hour;
     if (hour < 12) return 'Good Morning!';
@@ -57,30 +59,18 @@ class GuardDashboardScreen extends StatelessWidget {
             _buildSectionTitle('Recent Requests'),
             const SizedBox(height: 16),
             _buildRecentRequestItem(cardColor, accentGreen),
-            const SizedBox(height: 30),
-            _buildBottomActions(cardColor),
           ],
         ),
       ),
     );
   }
 
-  /// Builds the top header with greeting and weather.
   Widget _buildHeader() {
     return Row(
       children: [
-        const CircleAvatar(
-          radius: 28,
-          backgroundColor: Color(0xFFE0E0E0),
-        ),
-        const SizedBox(width: 16),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Hello Guard',
-              style: TextStyle(fontSize: 16, color: Colors.white70),
-            ),
             Text(
               _greeting,
               style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
@@ -90,20 +80,14 @@ class GuardDashboardScreen extends StatelessWidget {
         const Spacer(),
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
-          children: const [
-            Row(
-              children: [
-                Icon(Icons.wb_sunny_rounded, color: Color(0xFFFFC107), size: 20),
-                SizedBox(width: 6),
-                Text(
-                  '25°',
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
-                ),
-              ],
-            ),
-            SizedBox(height: 2),
+          children: [
             Text(
-              'Borkhedi, India',
+              _currentTime,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+            ),
+            const SizedBox(height: 2),
+            const Text(
+              'Nagpur, Maharashtra',
               style: TextStyle(fontSize: 12, color: Colors.white60),
             ),
           ],
@@ -112,7 +96,6 @@ class GuardDashboardScreen extends StatelessWidget {
     );
   }
 
-  /// Builds the row of two statistics cards.
   Widget _buildStatsRow(Color cardColor) {
     return Row(
       children: [
@@ -139,7 +122,6 @@ class GuardDashboardScreen extends StatelessWidget {
     );
   }
 
-  /// Builds the title for a section.
   Widget _buildSectionTitle(String title) {
     return Text(
       title,
@@ -147,7 +129,6 @@ class GuardDashboardScreen extends StatelessWidget {
     );
   }
 
-  /// Builds the large, green "Register New Visitor" button.
   Widget _buildRegisterButton(BuildContext context, Color accentGreen) {
     return ElevatedButton.icon(
       icon: const Icon(Icons.person_add_alt_1_outlined, size: 22),
@@ -170,7 +151,6 @@ class GuardDashboardScreen extends StatelessWidget {
     );
   }
 
-  /// Builds the list item for a single recent request.
   Widget _buildRecentRequestItem(Color cardColor, Color accentGreen) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
@@ -200,32 +180,8 @@ class GuardDashboardScreen extends StatelessWidget {
       ),
     );
   }
-
-  /// Builds the two action buttons at the bottom.
-  Widget _buildBottomActions(Color cardColor) {
-    return Row(
-      children: [
-        Expanded(
-          child: _ActionButton(
-            color: cardColor,
-            icon: Icons.call_outlined,
-            label: 'Emergency',
-          ),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: _ActionButton(
-            color: cardColor,
-            icon: Icons.notifications_outlined,
-            label: 'Alerts',
-          ),
-        ),
-      ],
-    );
-  }
 }
 
-/// A private, reusable widget for the statistics cards.
 class _StatCard extends StatelessWidget {
   const _StatCard({
     required this.color,
@@ -271,39 +227,6 @@ class _StatCard extends StatelessWidget {
             style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
           ),
         ],
-      ),
-    );
-  }
-}
-
-/// A private, reusable widget for the bottom action buttons.
-class _ActionButton extends StatelessWidget {
-  const _ActionButton({
-    required this.color,
-    required this.icon,
-    required this.label,
-  });
-
-  final Color color;
-  final IconData icon;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton.icon(
-      icon: Icon(icon, size: 22),
-      label: Text(label),
-      onPressed: () {},
-      style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.white.withOpacity(0.85),
-        backgroundColor: color,
-        minimumSize: const Size(double.infinity, 58),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        textStyle: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
-          fontFamily: 'Inter',
-        ),
       ),
     );
   }

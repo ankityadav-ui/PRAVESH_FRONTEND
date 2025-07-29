@@ -4,7 +4,7 @@ void main() {
   runApp(const MyApp());
 }
 
-// Data Model to represent a single visitor request for clean code
+// Data Model for a single visitor request
 class VisitorRequest {
   const VisitorRequest({
     required this.name,
@@ -21,7 +21,6 @@ class VisitorRequest {
   final String time;
 }
 
-// --- Main Application ---
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -31,7 +30,7 @@ class MyApp extends StatelessWidget {
       title: 'Visitor Requests',
       theme: ThemeData(
         brightness: Brightness.dark,
-        scaffoldBackgroundColor: const Color(0xFF1A1F2A),
+        scaffoldBackgroundColor: const Color.fromARGB(255, 52, 59, 72), // Matching Teacher/Warden theme
         fontFamily: 'Inter',
       ),
       home: const VisitorRequestsScreen(),
@@ -40,11 +39,9 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// --- The Screen Widget ---
 class VisitorRequestsScreen extends StatelessWidget {
   const VisitorRequestsScreen({super.key});
 
-  // Dummy data to populate the list, matching the design
   final List<VisitorRequest> _requests = const [
     VisitorRequest(
       name: 'Sarah Johnson',
@@ -71,13 +68,17 @@ class VisitorRequestsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const secondaryTextColor = Color(0xFF9E9E9E);
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: const Color(0xFF1A1F2A),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context); // ✅ Back button works
+          },
         ),
         title: const Text(
           'Visitor Requests',
@@ -92,7 +93,7 @@ class VisitorRequestsScreen extends StatelessWidget {
             padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
             child: Text(
               'Manage pending visitor requests',
-              style: TextStyle(color: Color(0xFF9E9E9E), fontSize: 15),
+              style: TextStyle(color: secondaryTextColor, fontSize: 15),
             ),
           ),
           Expanded(
@@ -111,7 +112,6 @@ class VisitorRequestsScreen extends StatelessWidget {
   }
 }
 
-// --- Reusable Request Card Widget ---
 class _RequestCard extends StatelessWidget {
   const _RequestCard({required this.request});
 
@@ -119,7 +119,7 @@ class _RequestCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const cardColor = Color(0xFF273348);
+    const cardColor = Color(0xFF273348); // Matching Teacher Dashboard cards
     const acceptColor = Color(0xFF34D17B);
     const rejectColor = Color(0xFFF44336);
     const secondaryTextColor = Color(0xFF9E9E9E);
@@ -159,12 +159,12 @@ class _RequestCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 16),
-          // Middle section: Room and ID details with corrected spacing
+          // Middle section: Room and ID details
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               _buildDetailItem(Icons.location_on_outlined, request.room, secondaryTextColor, 13),
-              const SizedBox(width: 40), // Corrected, fixed spacing
+              const SizedBox(width: 40),
               _buildDetailItem(Icons.person_outline, request.id, secondaryTextColor, 13),
             ],
           ),
@@ -182,7 +182,7 @@ class _RequestCard extends StatelessWidget {
                     backgroundColor: acceptColor,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     padding: const EdgeInsets.symmetric(vertical: 12),
-                    textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, fontFamily: 'Inter'),
+                    textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
@@ -197,7 +197,7 @@ class _RequestCard extends StatelessWidget {
                     side: const BorderSide(color: rejectColor, width: 1.5),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     padding: const EdgeInsets.symmetric(vertical: 12),
-                    textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, fontFamily: 'Inter'),
+                    textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
@@ -208,7 +208,6 @@ class _RequestCard extends StatelessWidget {
     );
   }
 
-  /// A helper widget to create the small icon-and-text details.
   Widget _buildDetailItem(IconData icon, String text, Color color, double size) {
     return Row(
       mainAxisSize: MainAxisSize.min,

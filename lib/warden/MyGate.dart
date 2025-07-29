@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pravesh_screen/warden/MyGate.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-// Data Model to cleanly represent a visitor
 class HostelVisitor {
   const HostelVisitor({
     required this.name,
@@ -22,7 +20,6 @@ class HostelVisitor {
   final String tag;
 }
 
-// --- Main Application ---
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -41,11 +38,9 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// --- The Screen Widget ---
 class MyGateVisitorsScreen extends StatelessWidget {
   const MyGateVisitorsScreen({super.key});
 
-  // Dummy data matching the design
   final List<HostelVisitor> _visitors = const [
     HostelVisitor(
       name: 'Mrs. Johnson',
@@ -71,7 +66,9 @@ class MyGateVisitorsScreen extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context); // ✅ Works now
+          },
         ),
         title: const Text(
           'My Gate - Visitors',
@@ -105,7 +102,6 @@ class MyGateVisitorsScreen extends StatelessWidget {
   }
 }
 
-// --- Reusable Visitor Card Widget (Rebuilt for Accuracy) ---
 class _VisitorCard extends StatelessWidget {
   const _VisitorCard({required this.visitor});
 
@@ -127,9 +123,8 @@ class _VisitorCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Top section: Avatar, Name, Tag, and Visit Type
+          // Top Section
           Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const CircleAvatar(radius: 24, backgroundColor: Color(0xFFE0E0E0)),
               const SizedBox(width: 12),
@@ -141,7 +136,11 @@ class _VisitorCard extends StatelessWidget {
                       children: [
                         Text(
                           visitor.name,
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
                         const Spacer(),
                         _buildTag(visitor.tag),
@@ -150,7 +149,10 @@ class _VisitorCard extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       visitor.visitType,
-                      style: const TextStyle(fontSize: 14, color: secondaryTextColor),
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: secondaryTextColor,
+                      ),
                     ),
                   ],
                 ),
@@ -158,16 +160,16 @@ class _VisitorCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
-          // Middle section: Location and Time details (Correctly placed)
+          // Middle Section
           Row(
             children: [
-              _buildDetailItem(Icons.location_on_outlined, visitor.location, secondaryTextColor, 13),
+              _buildDetailItem(Icons.location_on_outlined, visitor.location, secondaryTextColor),
               const SizedBox(width: 24),
-              _buildDetailItem(Icons.access_time, visitor.time, secondaryTextColor, 13),
+              _buildDetailItem(Icons.access_time, visitor.time, secondaryTextColor),
             ],
           ),
           const SizedBox(height: 16),
-          // Bottom section: Action Buttons
+          // Action Buttons
           Row(
             children: [
               Expanded(
@@ -180,7 +182,7 @@ class _VisitorCard extends StatelessWidget {
                     backgroundColor: acceptColor,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     padding: const EdgeInsets.symmetric(vertical: 12),
-                    textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, fontFamily: 'Inter'),
+                    textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
@@ -195,7 +197,7 @@ class _VisitorCard extends StatelessWidget {
                     side: const BorderSide(color: rejectColor, width: 1.5),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     padding: const EdgeInsets.symmetric(vertical: 12),
-                    textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, fontFamily: 'Inter'),
+                    textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
@@ -206,11 +208,10 @@ class _VisitorCard extends StatelessWidget {
     );
   }
 
-  /// A helper to create the colored tag using a Container for precise control.
   Widget _buildTag(String tag) {
     final Map<String, Color> tagColors = {
-      'parent': const Color(0xFF2196F3), // Blue
-      'official': const Color(0xFF9C27B0), // Purple
+      'parent': const Color(0xFF2196F3),
+      'official': const Color(0xFF9C27B0),
     };
 
     return Container(
@@ -230,16 +231,14 @@ class _VisitorCard extends StatelessWidget {
     );
   }
 
-  /// A helper to create the small icon-and-text details.
-  Widget _buildDetailItem(IconData icon, String text, Color color, double size) {
+  Widget _buildDetailItem(IconData icon, String text, Color color) {
     return Row(
-      mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, color: color, size: size + 3),
+        Icon(icon, color: color, size: 16),
         const SizedBox(width: 6),
         Text(
           text,
-          style: TextStyle(color: color, fontSize: size, fontWeight: FontWeight.w500),
+          style: TextStyle(color: color, fontSize: 13, fontWeight: FontWeight.w500),
         ),
       ],
     );
