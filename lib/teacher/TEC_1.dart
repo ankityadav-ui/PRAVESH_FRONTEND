@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pravesh_screen/teacher/TEC_2.dart';
 
 void main() {
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
       title: 'Teacher Dashboard',
       theme: ThemeData(
         brightness: Brightness.dark,
-        scaffoldBackgroundColor: const Color(0xFF1A1F2A),
+        scaffoldBackgroundColor: const Color.fromARGB(255, 52, 59, 72),
         fontFamily: 'Inter',
       ),
       home: const TeacherDashboardScreen(),
@@ -33,6 +34,10 @@ class TeacherDashboardScreen extends StatelessWidget {
     return 'Good Evening!';
   }
 
+  String get _currentTime {
+    return DateFormat('hh:mm a').format(DateTime.now());
+  }
+
   @override
   Widget build(BuildContext context) {
     const cardColor = Color(0xFF273348);
@@ -47,9 +52,7 @@ class TeacherDashboardScreen extends StatelessWidget {
             const SizedBox(height: 24),
             _buildStatsRow(cardColor),
             const SizedBox(height: 30),
-            _buildMyGateSection(context, accentGreen), // ✅ context passed
-            const SizedBox(height: 16),
-            _buildBottomActions(cardColor),
+            _buildMyGateSection(context, accentGreen),
           ],
         ),
       ),
@@ -59,11 +62,7 @@ class TeacherDashboardScreen extends StatelessWidget {
   Widget _buildHeader() {
     return Row(
       children: [
-        const CircleAvatar(
-          radius: 28,
-          backgroundColor: Color(0xFFE0E0E0),
-        ),
-        const SizedBox(width: 16),
+        // Removed Profile Avatar completely
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -73,27 +72,27 @@ class TeacherDashboardScreen extends StatelessWidget {
             ),
             Text(
               _greeting,
-              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+              style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
             ),
           ],
         ),
         const Spacer(),
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
-          children: const [
-            Row(
-              children: [
-                Icon(Icons.wb_sunny_rounded, color: Color(0xFFFFC107), size: 20),
-                SizedBox(width: 6),
-                Text(
-                  '28°',
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
-                ),
-              ],
-            ),
-            SizedBox(height: 2),
+          children: [
             Text(
-              'Borkhedi, India',
+              _currentTime, // Show current time instead of sun icon & temp
+              style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+            const SizedBox(height: 2),
+            const Text(
+              'Nagpur, Maharashtra', // Updated location
               style: TextStyle(fontSize: 12, color: Colors.white60),
             ),
           ],
@@ -128,7 +127,7 @@ class TeacherDashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMyGateSection(BuildContext context, Color accentGreen) { // ✅ context added
+  Widget _buildMyGateSection(BuildContext context, Color accentGreen) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -138,11 +137,17 @@ class TeacherDashboardScreen extends StatelessWidget {
           children: [
             const Text(
               'My Gate',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white),
+              style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white),
             ),
             Chip(
               label: const Text('3 Pending'),
-              labelStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+              labelStyle: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12),
               backgroundColor: accentGreen,
               padding: const EdgeInsets.symmetric(horizontal: 8),
               labelPadding: const EdgeInsets.symmetric(horizontal: 4),
@@ -157,39 +162,20 @@ class TeacherDashboardScreen extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const VisitorRequestsScreen()),
+              MaterialPageRoute(
+                  builder: (context) => const VisitorRequestsScreen()),
             );
           },
           style: ElevatedButton.styleFrom(
             foregroundColor: Colors.white,
             backgroundColor: accentGreen,
             minimumSize: const Size(double.infinity, 52),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-            textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, fontFamily: 'Inter'),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+            textStyle: const TextStyle(
+                fontSize: 16, fontWeight: FontWeight.w600, fontFamily: 'Inter'),
           ),
         )
-      ],
-    );
-  }
-
-  Widget _buildBottomActions(Color cardColor) {
-    return Row(
-      children: [
-        Expanded(
-          child: _ActionButton(
-            color: cardColor,
-            icon: Icons.calendar_today_outlined,
-            label: 'My Schedule',
-          ),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: _ActionButton(
-            color: cardColor,
-            icon: Icons.groups_outlined,
-            label: 'Class List',
-          ),
-        ),
       ],
     );
   }
@@ -230,58 +216,10 @@ class _StatCard extends StatelessWidget {
           const SizedBox(height: 2),
           Text(
             value,
-            style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
+            style: const TextStyle(
+                fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _ActionButton extends StatelessWidget {
-  const _ActionButton({
-    required this.color,
-    required this.icon,
-    required this.label,
-  });
-
-  final Color color;
-  final IconData icon;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 52,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(14),
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(14),
-          onTap: () {},
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Icon(icon, size: 20, color: Colors.white.withOpacity(0.85)),
-                const SizedBox(width: 12),
-                Text(
-                  label,
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    fontFamily: 'Inter',
-                    color: Colors.white.withOpacity(0.85),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
       ),
     );
   }

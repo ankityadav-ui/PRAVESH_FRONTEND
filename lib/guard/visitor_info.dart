@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       title: 'Visitor Information',
       theme: ThemeData(
         brightness: Brightness.dark,
-        scaffoldBackgroundColor: const Color(0xFF1A1F2A),
+      scaffoldBackgroundColor: const Color.fromARGB(255, 52, 59, 72),
         fontFamily: 'Inter',
       ),
       home: const VisitorInformationScreen(),
@@ -32,19 +32,23 @@ class VisitorInformationScreen extends StatefulWidget {
 }
 
 class _VisitorInformationScreenState extends State<VisitorInformationScreen> {
-  // Dummy state to manage the dropdown's selected value
   String? _selectedTeacher;
   final List<String> _teachers = ['Prof. Johnson', 'Prof. Brown', 'Dr. Smith'];
 
   @override
   Widget build(BuildContext context) {
+    const secondaryTextColor = Color(0xFF9E9E9E);
+    const accentGreen = Color(0xFF34D17B);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context); // ✅ Back works now
+          },
         ),
         title: const Text(
           'Visitor Information',
@@ -59,11 +63,15 @@ class _VisitorInformationScreenState extends State<VisitorInformationScreen> {
             padding: EdgeInsets.only(left: 4.0, bottom: 24.0),
             child: Text(
               'Fill in visitor details and select teacher',
-              style: TextStyle(color: Color(0xFF9E9E9E), fontSize: 15),
+              style: TextStyle(color: secondaryTextColor, fontSize: 15),
             ),
           ),
+
+          // Photo card
           _buildPhotoCapturedCard(),
           const SizedBox(height: 24),
+
+          // Visitor Name
           _buildLabel('Visitor Name'),
           const SizedBox(height: 12),
           TextFormField(
@@ -71,6 +79,8 @@ class _VisitorInformationScreenState extends State<VisitorInformationScreen> {
             decoration: _buildInputDecoration("Enter visitor's full name"),
           ),
           const SizedBox(height: 20),
+
+          // Reason
           _buildLabel('Reason for Visit'),
           const SizedBox(height: 12),
           TextFormField(
@@ -79,6 +89,8 @@ class _VisitorInformationScreenState extends State<VisitorInformationScreen> {
             decoration: _buildInputDecoration("Enter the purpose of visit"),
           ),
           const SizedBox(height: 20),
+
+          // Teacher Selection
           _buildLabel('Select Teacher to Meet'),
           const SizedBox(height: 12),
           DropdownButtonFormField<String>(
@@ -96,21 +108,21 @@ class _VisitorInformationScreenState extends State<VisitorInformationScreen> {
             },
             style: const TextStyle(
                 color: Colors.white, fontSize: 16, fontFamily: 'Inter'),
-            // Refined icon to better match the design's subtle arrow
             icon: const Icon(Icons.keyboard_arrow_down_rounded,
                 color: Colors.white70, size: 28),
             decoration: _buildInputDecoration("Choose a teacher"),
             dropdownColor: const Color(0xFF273348),
           ),
           const SizedBox(height: 40),
-          _buildSendRequestButton(),
+
+          // Send Button
+          _buildSendRequestButton(accentGreen),
           const SizedBox(height: 24),
         ],
       ),
     );
   }
 
-  /// Builds the styled label with a red asterisk.
   Widget _buildLabel(String label) {
     return RichText(
       text: TextSpan(
@@ -135,7 +147,6 @@ class _VisitorInformationScreenState extends State<VisitorInformationScreen> {
     );
   }
 
-  /// Builds the "Photo Captured" card at the top.
   Widget _buildPhotoCapturedCard() {
     return Container(
       padding: const EdgeInsets.all(16),
@@ -152,7 +163,6 @@ class _VisitorInformationScreenState extends State<VisitorInformationScreen> {
               color: const Color(0xFFE0E0E0),
               borderRadius: BorderRadius.circular(10),
             ),
-            // Refined inner dot for a more accurate light-gray appearance
             child: Center(
               child: Container(
                 width: 12,
@@ -191,21 +201,19 @@ class _VisitorInformationScreenState extends State<VisitorInformationScreen> {
     );
   }
 
-  /// Builds the "Send Request" button at the bottom.
-  Widget _buildSendRequestButton() {
+  Widget _buildSendRequestButton(Color accentGreen) {
     return ElevatedButton.icon(
       icon: const Icon(Icons.send_rounded, size: 20),
       label: const Text('Send Request to Teacher'),
       onPressed: () {
-            Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => RequestStatusScreen()),
-                );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const RequestStatusScreen()),
+        );
       },
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.white,
-        backgroundColor: const Color(0xFF34D17B),
+        backgroundColor: accentGreen,
         minimumSize: const Size(double.infinity, 54),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
         textStyle: const TextStyle(
@@ -217,15 +225,12 @@ class _VisitorInformationScreenState extends State<VisitorInformationScreen> {
     );
   }
 
-  /// Creates a reusable InputDecoration for all text fields.
-  /// This has been refined for more accurate height and spacing.
   InputDecoration _buildInputDecoration(String hintText) {
     return InputDecoration(
       hintText: hintText,
       hintStyle: const TextStyle(color: Colors.white54),
       filled: true,
       fillColor: const Color(0xFF273348),
-      // Increased vertical padding to make fields taller, matching the design.
       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),

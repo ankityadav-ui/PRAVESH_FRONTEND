@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       title: 'Visitor Photo Capture',
       theme: ThemeData(
         brightness: Brightness.dark,
-        scaffoldBackgroundColor: const Color(0xFF1A1F2A),
+scaffoldBackgroundColor: const Color.fromARGB(255, 52, 59, 72),
         fontFamily: 'Inter',
       ),
       home: const CaptureVisitorPhotoScreen(),
@@ -29,8 +29,6 @@ class CaptureVisitorPhotoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Define the design colors for consistency and accuracy
-    const Color primaryTextColor = Colors.white;
     const Color secondaryTextColor = Color(0xFF9E9E9E);
     const Color placeholderColor = Color(0xFF273348);
     const Color accentGreen = Color(0xFF34D17B);
@@ -40,15 +38,15 @@ class CaptureVisitorPhotoScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: primaryTextColor),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            // Back button functionality would go here
+            Navigator.pop(context); // ✅ Back works now
           },
         ),
         title: const Text(
           'Capture Visitor Photo',
           style: TextStyle(
-            color: primaryTextColor,
+            color: Colors.white,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
@@ -60,11 +58,11 @@ class CaptureVisitorPhotoScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Subtitle text placed just below the AppBar
+            // Subtitle
             const Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: EdgeInsets.only(left: 4.0, top: 4.0),
+                padding: EdgeInsets.only(top: 4.0),
                 child: Text(
                   'Take a photo of the visitor for identification',
                   style: TextStyle(
@@ -74,10 +72,9 @@ class CaptureVisitorPhotoScreen extends StatelessWidget {
                 ),
               ),
             ),
-
             const SizedBox(height: 60),
 
-            // NATIVE dashed border photo placeholder
+            // Dashed border photo placeholder
             _DashedBorder(
               strokeWidth: 2,
               color: Colors.white.withOpacity(0.4),
@@ -97,33 +94,28 @@ class CaptureVisitorPhotoScreen extends StatelessWidget {
                 ),
               ),
             ),
-
             const SizedBox(height: 24),
 
-            // Instructional text
             const Text(
               'Position visitor in frame and capture photo',
               style: TextStyle(
                 color: secondaryTextColor,
                 fontSize: 15,
               ),
+              textAlign: TextAlign.center,
             ),
-
             const SizedBox(height: 32),
 
-            // Capture Photo button
+            // Capture Photo Button
             ElevatedButton.icon(
               icon: const Icon(Icons.camera_alt_rounded, size: 22),
               label: const Text('Capture Photo'),
               onPressed: () {
-
-                    Navigator.push(
+                Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => VisitorInformationScreen()),
+                      builder: (context) => const VisitorInformationScreen()),
                 );
-
-
               },
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
@@ -146,7 +138,7 @@ class CaptureVisitorPhotoScreen extends StatelessWidget {
   }
 }
 
-/// A custom widget that draws a dashed border around its child.
+// Dashed Border Widget
 class _DashedBorder extends StatelessWidget {
   const _DashedBorder({
     required this.child,
@@ -176,7 +168,7 @@ class _DashedBorder extends StatelessWidget {
   }
 }
 
-/// A custom painter that draws a dashed path.
+// Dashed Border Painter
 class _DashedPathPainter extends CustomPainter {
   _DashedPathPainter({
     required this.color,
@@ -217,9 +209,7 @@ class _DashedPathPainter extends CustomPainter {
       while (distance < metric.length) {
         final double len = dashPattern[dashIndex % dashPattern.length];
         if (dashIndex % 2 == 0) {
-          // Even index is a dash
-          dest.addPath(
-              metric.extractPath(distance, distance + len), Offset.zero);
+          dest.addPath(metric.extractPath(distance, distance + len), Offset.zero);
         }
         distance += len;
         dashIndex++;

@@ -5,7 +5,6 @@ void main() {
   runApp(const MyApp());
 }
 
-// Main application widget
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -15,14 +14,16 @@ class MyApp extends StatelessWidget {
       title: 'Request Status',
       theme: ThemeData(
         brightness: Brightness.dark,
-        scaffoldBackgroundColor: const Color(0xFF1A1F2A),
+        scaffoldBackgroundColor: const Color.fromARGB(255, 52, 59, 72),
+        fontFamily: 'Inter',
         primaryColor: const Color(0xFF34D17B),
-        fontFamily: 'sans-serif',
         textTheme: const TextTheme(
           bodyLarge: TextStyle(color: Colors.white),
           bodyMedium: TextStyle(color: Colors.white70),
-          titleMedium:
-              TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          titleMedium: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
           titleSmall: TextStyle(color: Colors.white70),
         ),
       ),
@@ -37,58 +38,67 @@ class RequestStatusSuccessScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const accentGreen = Color(0xFF34D17B);
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        backgroundColor: Colors.transparent,
         elevation: 0,
+        titleSpacing: 16,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Request Status',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 18),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(fontSize: 18),
             ),
             const SizedBox(height: 4),
             Text(
               'Waiting for teacher response',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 14),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleSmall
+                  ?.copyWith(fontSize: 14),
             ),
           ],
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            _buildStatusCard(context),
-            const SizedBox(height: 24),
-            _buildRegisterButton(context), // ✅ Pass context here
+            _buildStatusCard(context, accentGreen),
+            const SizedBox(height: 30),
+            _buildRegisterButton(context, accentGreen),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildStatusCard(BuildContext context) {
-    return Card(
-      color: const Color(0xFF273348),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildHeader(),
-            const SizedBox(height: 24),
-            _buildDetailRow('MEETING WITH', 'Prof. Johnson'),
-            const SizedBox(height: 16),
-            _buildDetailRow('REASON', 'Discussion'),
-            const SizedBox(height: 16),
-            _buildDetailRow('REQUEST TIME', '07:56 PM'),
-            const SizedBox(height: 24),
-            _buildApprovalStatus(context),
-          ],
-        ),
+  Widget _buildStatusCard(BuildContext context, Color accentGreen) {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFF273348),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildHeader(),
+          const SizedBox(height: 24),
+          _buildDetailRow('MEETING WITH', 'Prof. Johnson'),
+          const SizedBox(height: 16),
+          _buildDetailRow('REASON', 'Discussion'),
+          const SizedBox(height: 16),
+          _buildDetailRow('REQUEST TIME', '07:56 PM'),
+          const SizedBox(height: 24),
+          _buildApprovalStatus(accentGreen),
+        ],
       ),
     );
   }
@@ -100,29 +110,29 @@ class RequestStatusSuccessScreen extends StatelessWidget {
           width: 50,
           height: 50,
           decoration: BoxDecoration(
-            color: const Color(0xFFC4C4C4).withOpacity(0.3),
+            color: Colors.white.withOpacity(0.1),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: const Icon(Icons.person, color: Colors.white70, size: 30),
+          child: const Icon(Icons.person, color: Colors.white70, size: 28),
         ),
         const SizedBox(width: 16),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
+          children: const [
+            Text(
               'Kunal Mohapatra',
               style: TextStyle(
-                fontSize: 18,
+                fontSize: 17,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             Text(
               'Visitor Request',
               style: TextStyle(
-                fontSize: 14,
-                color: Colors.white.withOpacity(0.7),
+                fontSize: 13,
+                color: Colors.white70,
               ),
             ),
           ],
@@ -137,9 +147,9 @@ class RequestStatusSuccessScreen extends StatelessWidget {
       children: [
         Text(
           label,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 12,
-            color: Colors.white.withOpacity(0.5),
+            color: Colors.white54,
             letterSpacing: 0.5,
           ),
         ),
@@ -147,7 +157,7 @@ class RequestStatusSuccessScreen extends StatelessWidget {
         Text(
           value,
           style: const TextStyle(
-            fontSize: 16,
+            fontSize: 15,
             fontWeight: FontWeight.w600,
             color: Colors.white,
           ),
@@ -156,22 +166,22 @@ class RequestStatusSuccessScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildApprovalStatus(BuildContext context) {
-    final Color approvalColor = Theme.of(context).primaryColor;
+  Widget _buildApprovalStatus(Color accentGreen) {
     return Center(
       child: Column(
         children: [
-          Icon(Icons.check_circle, color: approvalColor, size: 60),
+          Icon(Icons.check_circle, color: accentGreen, size: 64),
           const SizedBox(height: 16),
           Chip(
             avatar: const Icon(Icons.check, color: Colors.white, size: 16),
             label: const Text('APPROVED'),
             labelStyle: const TextStyle(
-                color: Colors.white, fontWeight: FontWeight.bold),
-            backgroundColor: approvalColor.withOpacity(0.25),
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+            backgroundColor: accentGreen.withOpacity(0.2),
             shape: const StadiumBorder(),
-            side: BorderSide(color: approvalColor),
-            padding: const EdgeInsets.symmetric(horizontal: 8),
+            side: BorderSide(color: accentGreen, width: 1),
           ),
           const SizedBox(height: 8),
           Text(
@@ -186,21 +196,21 @@ class RequestStatusSuccessScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildRegisterButton(BuildContext context) { // ✅ context is passed here
+  Widget _buildRegisterButton(BuildContext context, Color accentGreen) {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => GuardDashboardScreen()),
+            MaterialPageRoute(builder: (context) => const GuardDashboardScreen()),
           );
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF34D17B),
+          backgroundColor: accentGreen,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(14),
           ),
         ),
         child: const Text(

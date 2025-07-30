@@ -1,18 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pravesh_screen/app_colors_provider.dart';
 import 'package:pravesh_screen/warden/warden_students_outside_screen.dart';
 import 'package:pravesh_screen/warden/LateEntryRequestsScreen.dart';
 import 'package:pravesh_screen/warden/MyGate.dart';
-import 'package:pravesh_screen/themeNotifier.dart';
-import 'package:provider/provider.dart';
 
 class WardenHomeScreen extends StatelessWidget {
   const WardenHomeScreen({super.key});
 
+  // Dynamic greeting based on time
+  String get _greeting {
+    final hour = DateTime.now().hour;
+    if (hour < 12) return 'Good Morning!';
+    if (hour < 17) return 'Good Afternoon!';
+    return 'Good Evening!';
+  }
+
+  // Current time formatted
+  String get _currentTime {
+    return DateFormat('hh:mm a').format(DateTime.now());
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = appColors(context);
-    final themeNotifier = Provider.of<ThemeNotifier>(context);
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
@@ -26,51 +37,59 @@ class WardenHomeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header: Greeting & Theme Toggle
+            // Header (same style as Teacher)
             Row(
               children: [
-                CircleAvatar(
-                  radius: screenWidth * 0.07,
-                  backgroundColor: colors.green,
-                  child: Icon(Icons.person, color: Colors.white),
-                ),
-                SizedBox(width: screenWidth * 0.04),
+                // Greeting
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Hello Mr.Harsh Goud",
+                      "Hello Mr. Harsh Goud",
                       style: TextStyle(
-                        fontSize: screenWidth * 0.045,
-                        color: colors.white,
+                        fontSize: 16,
+                        color: colors.white.withOpacity(0.7),
                       ),
                     ),
                     Text(
-                      "Good Evening!",
+                      _greeting,
                       style: TextStyle(
-                        fontSize: screenWidth * 0.04,
-                        color: colors.green,
+                        fontSize: 22,
                         fontWeight: FontWeight.bold,
+                        color: colors.white,
                       ),
                     ),
                   ],
                 ),
-                Spacer(),
-                // Theme Toggle Button
-                IconButton(
-                  onPressed: () => themeNotifier.toggleTheme(),
-                  icon: Icon(
-                    themeNotifier.isDarkMode
-                        ? Icons.light_mode
-                        : Icons.dark_mode,
-                    color: colors.white,
-                  ),
+                const Spacer(),
+                // Time + Location
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      _currentTime,
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      "Nagpur, Maharashtra",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: colors.white.withOpacity(0.6),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
+
             SizedBox(height: screenHeight * 0.03),
 
-            // Counters Row
+            // Counters
             Row(
               children: [
                 _infoCard(context, "Students Outside", "3", Icons.groups),
@@ -80,7 +99,7 @@ class WardenHomeScreen extends StatelessWidget {
             ),
             SizedBox(height: screenHeight * 0.025),
 
-            // Urgent Alert Card
+            // Urgent Alert
             Container(
               width: double.infinity,
               padding: EdgeInsets.all(screenWidth * 0.045),
@@ -120,11 +139,11 @@ class WardenHomeScreen extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                        Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => LateEntryRequestsScreen()),
-                );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => LateEntryRequestsScreen()),
+                      );
                     },
                     child: Text("Review Requests"),
                   ),
@@ -160,17 +179,6 @@ class WardenHomeScreen extends StatelessWidget {
                       builder: (context) => MyGateVisitorsScreen()),
                 );
               },
-            ),
-            SizedBox(height: screenHeight * 0.025),
-
-            // Bottom Row Buttons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _smallButton(context, label: "Room Status", icon: Icons.bed),
-                _smallButton(context,
-                    label: "Announcements", icon: Icons.campaign),
-              ],
             ),
           ],
         ),
@@ -231,36 +239,6 @@ class WardenHomeScreen extends StatelessWidget {
       label: Text(
         label,
         style: TextStyle(fontSize: screenWidth * 0.04),
-      ),
-    );
-  }
-
-  Widget _smallButton(BuildContext context,
-      {required String label, required IconData icon}) {
-    final colors = appColors(context);
-    final screenWidth = MediaQuery.of(context).size.width;
-    double getFontSize(double base) => screenWidth < 360 ? base * 0.85 : base;
-
-    return Expanded(
-      child: ElevatedButton.icon(
-        onPressed: () {},
-        style: ElevatedButton.styleFrom(
-          backgroundColor: colors.box,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          minimumSize: Size(screenWidth * 0.4, screenWidth * 0.12),
-        ),
-        icon: Icon(icon, color: colors.white, size: screenWidth * 0.06),
-        label: Flexible(
-          child: Text(
-            label,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-                color: colors.white,
-                fontSize: getFontSize(screenWidth * 0.035)),
-          ),
-        ),
       ),
     );
   }
