@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       title: 'Visitor Requests',
       theme: ThemeData(
         brightness: Brightness.dark,
-        scaffoldBackgroundColor: const Color.fromARGB(255, 52, 59, 72), // Matching Teacher/Warden theme
+        scaffoldBackgroundColor: const Color.fromARGB(255, 52, 59, 72),
         fontFamily: 'Inter',
       ),
       home: const VisitorRequestsScreen(),
@@ -69,6 +69,7 @@ class VisitorRequestsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const secondaryTextColor = Color(0xFF9E9E9E);
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: AppBar(
@@ -77,30 +78,30 @@ class VisitorRequestsScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pop(context); // ✅ Back button works
+            Navigator.pop(context);
           },
         ),
-        title: const Text(
+        title: Text(
           'Visitor Requests',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: screenWidth * 0.05, fontWeight: FontWeight.bold),
         ),
         centerTitle: false,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+          Padding(
+            padding: EdgeInsets.fromLTRB(screenWidth * 0.05, 0, screenWidth * 0.05, screenWidth * 0.05),
             child: Text(
               'Manage pending visitor requests',
-              style: TextStyle(color: secondaryTextColor, fontSize: 15),
+              style: TextStyle(color: secondaryTextColor, fontSize: screenWidth * 0.035),
             ),
           ),
           Expanded(
             child: ListView.separated(
               itemCount: _requests.length,
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              separatorBuilder: (context, index) => const SizedBox(height: 16),
+              padding: EdgeInsets.fromLTRB(screenWidth * 0.04, 0, screenWidth * 0.04, screenWidth * 0.04),
+              separatorBuilder: (context, index) => SizedBox(height: screenWidth * 0.04),
               itemBuilder: (context, index) {
                 return _RequestCard(request: _requests[index]);
               },
@@ -119,85 +120,83 @@ class _RequestCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const cardColor = Color(0xFF273348); // Matching Teacher Dashboard cards
+    const cardColor = Color(0xFF273348);
     const acceptColor = Color(0xFF34D17B);
     const rejectColor = Color(0xFFF44336);
     const secondaryTextColor = Color(0xFF9E9E9E);
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(screenWidth * 0.04),
       decoration: BoxDecoration(
         color: cardColor,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
         children: [
-          // Top section: Avatar, Name, Reason, and Time
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CircleAvatar(radius: 24, backgroundColor: Color(0xFFE0E0E0)),
-              const SizedBox(width: 12),
+              CircleAvatar(radius: screenWidth * 0.06, backgroundColor: const Color(0xFFE0E0E0)),
+              SizedBox(width: screenWidth * 0.03),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       request.name,
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                      style: TextStyle(fontSize: screenWidth * 0.04, fontWeight: FontWeight.bold, color: Colors.white),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: screenWidth * 0.01),
                     Text(
                       request.reason,
-                      style: const TextStyle(fontSize: 14, color: secondaryTextColor),
+                      style: TextStyle(fontSize: screenWidth * 0.035, color: secondaryTextColor),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(width: 8),
-              _buildDetailItem(Icons.access_time, request.time, secondaryTextColor, 14),
+              SizedBox(width: screenWidth * 0.02),
+              _buildDetailItem(Icons.access_time, request.time, secondaryTextColor, screenWidth * 0.035),
             ],
           ),
-          const SizedBox(height: 16),
-          // Middle section: Room and ID details
+          SizedBox(height: screenWidth * 0.04),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              _buildDetailItem(Icons.location_on_outlined, request.room, secondaryTextColor, 13),
-              const SizedBox(width: 40),
-              _buildDetailItem(Icons.person_outline, request.id, secondaryTextColor, 13),
+              _buildDetailItem(Icons.location_on_outlined, request.room, secondaryTextColor, screenWidth * 0.03),
+              SizedBox(width: screenWidth * 0.1),
+              _buildDetailItem(Icons.person_outline, request.id, secondaryTextColor, screenWidth * 0.03),
             ],
           ),
-          const SizedBox(height: 16),
-          // Bottom section: Action Buttons
+          SizedBox(height: screenWidth * 0.04),
           Row(
             children: [
               Expanded(
                 child: ElevatedButton.icon(
-                  icon: const Icon(Icons.check_circle, size: 18),
-                  label: const Text('Accept'),
+                  icon: Icon(Icons.check_circle, size: screenWidth * 0.045),
+                  label: Text('Accept', style: TextStyle(fontSize: screenWidth * 0.035)),
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
                     backgroundColor: acceptColor,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                    padding: EdgeInsets.symmetric(vertical: screenWidth * 0.03),
+                    textStyle: const TextStyle(fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: screenWidth * 0.03),
               Expanded(
                 child: OutlinedButton.icon(
-                  icon: const Icon(Icons.cancel, size: 18),
-                  label: const Text('Reject'),
+                  icon: Icon(Icons.cancel, size: screenWidth * 0.045),
+                  label: Text('Reject', style: TextStyle(fontSize: screenWidth * 0.035)),
                   onPressed: () {},
                   style: OutlinedButton.styleFrom(
                     foregroundColor: rejectColor,
                     side: const BorderSide(color: rejectColor, width: 1.5),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                    padding: EdgeInsets.symmetric(vertical: screenWidth * 0.03),
+                    textStyle: const TextStyle(fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
@@ -212,8 +211,8 @@ class _RequestCard extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, color: color, size: size + 3),
-        const SizedBox(width: 6),
+        Icon(icon, color: color, size: size + (size * 0.2)),
+        SizedBox(width: size * 0.2),
         Text(
           text,
           style: TextStyle(color: color, fontSize: size, fontWeight: FontWeight.w500),
