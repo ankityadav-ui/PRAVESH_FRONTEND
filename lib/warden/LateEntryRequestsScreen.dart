@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pravesh_screen/widgets/color.dart';
-import 'package:pravesh_screen/app_colors_provider.dart'; // for appColors(context)
+import 'package:pravesh_screen/app_colors_provider.dart';
 
 class LateEntryRequestsScreen extends StatelessWidget {
   const LateEntryRequestsScreen({super.key});
@@ -31,6 +31,7 @@ class LateEntryRequestsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = appColors(context);
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       backgroundColor: colors.background,
@@ -42,13 +43,13 @@ class LateEntryRequestsScreen extends StatelessWidget {
           'Late Entry Requests',
           style: TextStyle(
             color: colors.white,
-            fontSize: 18,
+            fontSize: screenWidth * 0.05,
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: EdgeInsets.all(screenWidth * 0.03),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -56,16 +57,16 @@ class LateEntryRequestsScreen extends StatelessWidget {
               'Students requesting entry after 8:00 PM',
               style: TextStyle(
                 color: colors.hintText,
-                fontSize: 14,
+                fontSize: screenWidth * 0.035,
               ),
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: screenWidth * 0.03),
             Expanded(
               child: ListView.builder(
                 itemCount: lateEntries.length,
                 itemBuilder: (context, index) {
                   final entry = lateEntries[index];
-                  return _buildRequestCard(entry, colors);
+                  return _buildRequestCard(context, entry, colors);
                 },
               ),
             ),
@@ -75,15 +76,16 @@ class LateEntryRequestsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildRequestCard(Map<String, String> entry, AppColors colors) {
+  Widget _buildRequestCard(BuildContext context, Map<String, String> entry, AppColors colors) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(14),
+      margin: EdgeInsets.only(bottom: screenWidth * 0.04),
+      padding: EdgeInsets.all(screenWidth * 0.035),
       decoration: BoxDecoration(
         color: colors.box,
         borderRadius: BorderRadius.circular(12),
         border: Border(
-          left: BorderSide(color: colors.red, width: 3),
+          left: BorderSide(color: colors.red, width: screenWidth * 0.007),
         ),
       ),
       child: Column(
@@ -91,12 +93,12 @@ class LateEntryRequestsScreen extends StatelessWidget {
         children: [
           Row(
             children: [
-              const CircleAvatar(
-                radius: 22,
+              CircleAvatar(
+                radius: screenWidth * 0.055,
                 backgroundColor: Colors.grey,
-                child: Icon(Icons.person, color: Colors.white),
+                child: Icon(Icons.person, color: Colors.white, size: screenWidth * 0.06),
               ),
-              const SizedBox(width: 10),
+              SizedBox(width: screenWidth * 0.025),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,18 +107,18 @@ class LateEntryRequestsScreen extends StatelessWidget {
                       entry["name"] ?? '',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        fontSize: screenWidth * 0.04,
                         color: colors.white,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: screenWidth * 0.01),
                     Row(
                       children: [
-                        const Icon(Icons.meeting_room,
-                            size: 14, color: Colors.grey),
-                        const SizedBox(width: 4),
+                        Icon(Icons.meeting_room,
+                            size: screenWidth * 0.035, color: Colors.grey),
+                        SizedBox(width: screenWidth * 0.01),
                         Text(entry["room"] ?? '',
-                            style: TextStyle(color: colors.hintText)),
+                            style: TextStyle(color: colors.hintText, fontSize: screenWidth * 0.035)),
                       ],
                     ),
                   ],
@@ -126,80 +128,82 @@ class LateEntryRequestsScreen extends StatelessWidget {
                 '⚠ URGENT',
                 style: TextStyle(
                   color: colors.red,
-                  fontSize: 12,
+                  fontSize: screenWidth * 0.03,
                   fontWeight: FontWeight.bold,
                 ),
               )
             ],
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: screenWidth * 0.03),
           Row(
             children: [
-              const Icon(Icons.schedule, size: 14, color: Colors.grey),
-              const SizedBox(width: 4),
+              Icon(Icons.schedule, size: screenWidth * 0.035, color: Colors.grey),
+              SizedBox(width: screenWidth * 0.01),
               Text('Requested at: ${entry["requestedAt"]}',
-                  style: TextStyle(color: colors.hintText)),
+                  style: TextStyle(color: colors.hintText, fontSize: screenWidth * 0.035)),
             ],
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: screenWidth * 0.01),
           Row(
             children: [
-              const Icon(Icons.timer_outlined, size: 14, color: Colors.grey),
-              const SizedBox(width: 4),
+              Icon(Icons.timer_outlined, size: screenWidth * 0.035, color: Colors.grey),
+              SizedBox(width: screenWidth * 0.01),
               Text('Expected return: ${entry["expectedReturn"]}',
-                  style: TextStyle(color: colors.hintText)),
+                  style: TextStyle(color: colors.hintText, fontSize: screenWidth * 0.035)),
             ],
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: screenWidth * 0.025),
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(12),
+            padding: EdgeInsets.all(screenWidth * 0.03),
             decoration: BoxDecoration(
               color: Colors.grey.shade800,
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
               'Reason for delay:\n${entry["reason"] ?? ''}',
-              style: const TextStyle(color: Colors.white, fontSize: 13),
+              style: TextStyle(color: Colors.white, fontSize: screenWidth * 0.035),
             ),
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: screenWidth * 0.025),
           Row(
             children: [
-              Text('ID: ${entry["id"]}', style: TextStyle(color: colors.hintText)),
+              Text('ID: ${entry["id"]}', style: TextStyle(color: colors.hintText, fontSize: screenWidth * 0.035)),
               const Spacer(),
-              Text(entry["phone"] ?? '', style: TextStyle(color: colors.hintText)),
+              Text(entry["phone"] ?? '', style: TextStyle(color: colors.hintText, fontSize: screenWidth * 0.035)),
             ],
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: screenWidth * 0.03),
           Row(
             children: [
               Expanded(
                 child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: colors.green,
-                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    padding: EdgeInsets.symmetric(vertical: screenWidth * 0.025),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                   ),
                   onPressed: () {
                     // TODO: Approve action
                   },
-                  icon: const Icon(Icons.check),
-                  label: const Text("Approve Entry"),
+                  icon: Icon(Icons.check, size: screenWidth * 0.04),
+                  label: Text("Approve Entry", style: TextStyle(fontSize: screenWidth * 0.03)),
                 ),
               ),
-              const SizedBox(width: 10),
+              SizedBox(width: screenWidth * 0.025),
               Expanded(
                 child: OutlinedButton.icon(
                   style: OutlinedButton.styleFrom(
                     foregroundColor: colors.red,
-                    side: BorderSide(color: colors.red),
-                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    side: BorderSide(color: colors.red, width: 1.5),
+                    padding: EdgeInsets.symmetric(vertical: screenWidth * 0.025),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                   ),
                   onPressed: () {
                     // TODO: Deny action
                   },
-                  icon: const Icon(Icons.close),
-                  label: const Text("Deny"),
+                  icon: Icon(Icons.close, size: screenWidth * 0.04),
+                  label: Text("Deny", style: TextStyle(fontSize: screenWidth * 0.03)),
                 ),
               ),
             ],

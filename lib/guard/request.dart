@@ -1,3 +1,4 @@
+// Refactored request.dart for responsiveness
 import 'package:flutter/material.dart';
 import 'package:pravesh_screen/guard/new_visitor_managment.dart';
 
@@ -39,39 +40,34 @@ class RequestStatusSuccessScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const accentGreen = Color(0xFF34D17B);
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        titleSpacing: 16,
+        titleSpacing: screenWidth * 0.04,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Request Status',
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium
-                  ?.copyWith(fontSize: 18),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: screenWidth * 0.045),
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: screenWidth * 0.01),
             Text(
               'Waiting for teacher response',
-              style: Theme.of(context)
-                  .textTheme
-                  .titleSmall
-                  ?.copyWith(fontSize: 14),
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: screenWidth * 0.035),
             ),
           ],
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(screenWidth * 0.05),
         child: Column(
           children: [
             _buildStatusCard(context, accentGreen),
-            const SizedBox(height: 30),
+            SizedBox(height: screenWidth * 0.075),
             _buildRegisterButton(context, accentGreen),
           ],
         ),
@@ -80,58 +76,59 @@ class RequestStatusSuccessScreen extends StatelessWidget {
   }
 
   Widget _buildStatusCard(BuildContext context, Color accentGreen) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Container(
       decoration: BoxDecoration(
         color: const Color(0xFF273348),
         borderRadius: BorderRadius.circular(16),
       ),
-      padding: const EdgeInsets.all(20.0),
+      padding: EdgeInsets.all(screenWidth * 0.05),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildHeader(),
-          const SizedBox(height: 24),
-          _buildDetailRow('MEETING WITH', 'Prof. Johnson'),
-          const SizedBox(height: 16),
-          _buildDetailRow('REASON', 'Discussion'),
-          const SizedBox(height: 16),
-          _buildDetailRow('REQUEST TIME', '07:56 PM'),
-          const SizedBox(height: 24),
-          _buildApprovalStatus(accentGreen),
+          _buildHeader(screenWidth),
+          SizedBox(height: screenWidth * 0.06),
+          _buildDetailRow(screenWidth, 'MEETING WITH', 'Prof. Johnson'),
+          SizedBox(height: screenWidth * 0.04),
+          _buildDetailRow(screenWidth, 'REASON', 'Discussion'),
+          SizedBox(height: screenWidth * 0.04),
+          _buildDetailRow(screenWidth, 'REQUEST TIME', '07:56 PM'),
+          SizedBox(height: screenWidth * 0.06),
+          _buildApprovalStatus(screenWidth, accentGreen),
         ],
       ),
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(double screenWidth) {
     return Row(
       children: [
         Container(
-          width: 50,
-          height: 50,
+          width: screenWidth * 0.125,
+          height: screenWidth * 0.125,
           decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.1),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: const Icon(Icons.person, color: Colors.white70, size: 28),
+          child: Icon(Icons.person, color: Colors.white70, size: screenWidth * 0.07),
         ),
-        const SizedBox(width: 16),
+        SizedBox(width: screenWidth * 0.04),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Text(
               'Kunal Mohapatra',
               style: TextStyle(
-                fontSize: 17,
+                fontSize: screenWidth * 0.042,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
             ),
-            SizedBox(height: 4),
+            SizedBox(height: screenWidth * 0.01),
             Text(
               'Visitor Request',
               style: TextStyle(
-                fontSize: 13,
+                fontSize: screenWidth * 0.032,
                 color: Colors.white70,
               ),
             ),
@@ -141,23 +138,23 @@ class RequestStatusSuccessScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailRow(String label, String value) {
+  Widget _buildDetailRow(double screenWidth, String label, String value) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
-          style: const TextStyle(
-            fontSize: 12,
+          style: TextStyle(
+            fontSize: screenWidth * 0.03,
             color: Colors.white54,
             letterSpacing: 0.5,
           ),
         ),
-        const SizedBox(height: 4),
+        SizedBox(height: screenWidth * 0.01),
         Text(
           value,
-          style: const TextStyle(
-            fontSize: 15,
+          style: TextStyle(
+            fontSize: screenWidth * 0.038,
             fontWeight: FontWeight.w600,
             color: Colors.white,
           ),
@@ -166,15 +163,15 @@ class RequestStatusSuccessScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildApprovalStatus(Color accentGreen) {
+  Widget _buildApprovalStatus(double screenWidth, Color accentGreen) {
     return Center(
       child: Column(
         children: [
-          Icon(Icons.check_circle, color: accentGreen, size: 64),
-          const SizedBox(height: 16),
+          Icon(Icons.check_circle, color: accentGreen, size: screenWidth * 0.16),
+          SizedBox(height: screenWidth * 0.04),
           Chip(
-            avatar: const Icon(Icons.check, color: Colors.white, size: 16),
-            label: const Text('APPROVED'),
+            avatar: Icon(Icons.check, color: Colors.white, size: screenWidth * 0.04),
+            label: Text('APPROVED', style: TextStyle(fontSize: screenWidth * 0.035)),
             labelStyle: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
@@ -183,12 +180,12 @@ class RequestStatusSuccessScreen extends StatelessWidget {
             shape: const StadiumBorder(),
             side: BorderSide(color: accentGreen, width: 1),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: screenWidth * 0.02),
           Text(
             'Request approved! Visitor can proceed.',
             style: TextStyle(
               color: Colors.white.withOpacity(0.8),
-              fontSize: 14,
+              fontSize: screenWidth * 0.035,
             ),
           ),
         ],
@@ -197,6 +194,7 @@ class RequestStatusSuccessScreen extends StatelessWidget {
   }
 
   Widget _buildRegisterButton(BuildContext context, Color accentGreen) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
@@ -208,17 +206,17 @@ class RequestStatusSuccessScreen extends StatelessWidget {
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: accentGreen,
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          padding: EdgeInsets.symmetric(vertical: screenWidth * 0.04),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),
         ),
-        child: const Text(
+        child: Text(
           'Register New Visitor',
           style: TextStyle(
-            fontSize: 16,
+            fontSize: screenWidth * 0.04,
             fontWeight: FontWeight.bold,
-            color: Color(0xFF1A1F2A),
+            color: const Color(0xFF1A1F2A),
           ),
         ),
       ),

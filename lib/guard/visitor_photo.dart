@@ -1,3 +1,4 @@
+// Refactored visitor_photo.dart for responsiveness
 import 'dart:ui' show PathMetric, PathMetrics;
 import 'package:flutter/material.dart';
 import 'package:pravesh_screen/guard/visitor_info.dart';
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'Visitor Photo Capture',
       theme: ThemeData(
         brightness: Brightness.dark,
-scaffoldBackgroundColor: const Color.fromARGB(255, 52, 59, 72),
+        scaffoldBackgroundColor: const Color.fromARGB(255, 52, 59, 72),
         fontFamily: 'Inter',
       ),
       home: const CaptureVisitorPhotoScreen(),
@@ -32,6 +33,7 @@ class CaptureVisitorPhotoScreen extends StatelessWidget {
     const Color secondaryTextColor = Color(0xFF9E9E9E);
     const Color placeholderColor = Color(0xFF273348);
     const Color accentGreen = Color(0xFF34D17B);
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: AppBar(
@@ -40,105 +42,102 @@ class CaptureVisitorPhotoScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pop(context); // ✅ Back works now
+            Navigator.pop(context);
           },
         ),
-        title: const Text(
+        title: Text(
           'Capture Visitor Photo',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 20,
+            fontSize: screenWidth * 0.05,
             fontWeight: FontWeight.bold,
           ),
         ),
         centerTitle: false,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // Subtitle
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: EdgeInsets.only(top: 4.0),
-                child: Text(
-                  'Take a photo of the visitor for identification',
-                  style: TextStyle(
-                    color: secondaryTextColor,
-                    fontSize: 15,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.06),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: EdgeInsets.only(top: screenWidth * 0.01),
+                  child: Text(
+                    'Take a photo of the visitor for identification',
+                    style: TextStyle(
+                      color: secondaryTextColor,
+                      fontSize: screenWidth * 0.035,
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 60),
-
-            // Dashed border photo placeholder
-            _DashedBorder(
-              strokeWidth: 2,
-              color: Colors.white.withOpacity(0.4),
-              radius: const Radius.circular(20),
-              dashPattern: const [10, 8],
-              child: Container(
-                width: 260,
-                height: 260,
-                decoration: BoxDecoration(
-                  color: placeholderColor,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Icon(
-                  Icons.camera_alt_outlined,
-                  color: Colors.white.withOpacity(0.5),
-                  size: 100,
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-
-            const Text(
-              'Position visitor in frame and capture photo',
-              style: TextStyle(
-                color: secondaryTextColor,
-                fontSize: 15,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 32),
-
-            // Capture Photo Button
-            ElevatedButton.icon(
-              icon: const Icon(Icons.camera_alt_rounded, size: 22),
-              label: const Text('Capture Photo'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const VisitorInformationScreen()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: accentGreen,
-                minimumSize: const Size(220, 54),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                textStyle: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Inter',
+              SizedBox(height: screenWidth * 0.15),
+              _DashedBorder(
+                strokeWidth: 2,
+                color: Colors.white.withOpacity(0.4),
+                radius: const Radius.circular(20),
+                dashPattern: const [10, 8],
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: placeholderColor,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Icon(
+                      Icons.camera_alt_outlined,
+                      color: Colors.white.withOpacity(0.5),
+                      size: screenWidth * 0.25,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ],
+              SizedBox(height: screenWidth * 0.06),
+              Text(
+                'Position visitor in frame and capture photo',
+                style: TextStyle(
+                  color: secondaryTextColor,
+                  fontSize: screenWidth * 0.035,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: screenWidth * 0.08),
+              ElevatedButton.icon(
+                icon: Icon(Icons.camera_alt_rounded, size: screenWidth * 0.055),
+                label: Text('Capture Photo', style: TextStyle(fontSize: screenWidth * 0.04)),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const VisitorInformationScreen()),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: accentGreen,
+                  minimumSize: Size(screenWidth * 0.55, screenWidth * 0.13),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  textStyle: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Inter',
+                  ),
+                ),
+              ),
+              SizedBox(height: screenWidth * 0.06),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-// Dashed Border Widget
+// Dashed Border Widget (No changes needed, already responsive)
 class _DashedBorder extends StatelessWidget {
   const _DashedBorder({
     required this.child,
@@ -168,7 +167,7 @@ class _DashedBorder extends StatelessWidget {
   }
 }
 
-// Dashed Border Painter
+// Dashed Border Painter (No changes needed)
 class _DashedPathPainter extends CustomPainter {
   _DashedPathPainter({
     required this.color,

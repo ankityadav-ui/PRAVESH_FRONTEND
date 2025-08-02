@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pravesh_screen/widgets/color.dart';
-import 'package:pravesh_screen/app_colors_provider.dart'; // for appColors(context)
+import 'package:pravesh_screen/app_colors_provider.dart';
 
 class StudentsOutsideScreen extends StatelessWidget {
   const StudentsOutsideScreen({super.key});
@@ -35,6 +35,7 @@ class StudentsOutsideScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = appColors(context);
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       backgroundColor: colors.background,
@@ -47,20 +48,20 @@ class StudentsOutsideScreen extends StatelessWidget {
           style: TextStyle(
             color: colors.white,
             fontWeight: FontWeight.bold,
-            fontSize: 18,
+            fontSize: screenWidth * 0.05,
           ),
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: EdgeInsets.all(screenWidth * 0.03),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Currently ${students.length} students are outside',
-              style: TextStyle(color: colors.hintText, fontSize: 14),
+              style: TextStyle(color: colors.hintText, fontSize: screenWidth * 0.035),
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: screenWidth * 0.03),
             Expanded(
               child: ListView.builder(
                 itemCount: students.length,
@@ -77,9 +78,10 @@ class StudentsOutsideScreen extends StatelessWidget {
   }
 
   Widget _buildStudentCard(BuildContext context, Map<String, String> student, AppColors colors) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(12),
+      margin: EdgeInsets.only(bottom: screenWidth * 0.03),
+      padding: EdgeInsets.all(screenWidth * 0.03),
       decoration: BoxDecoration(
         color: colors.box,
         borderRadius: BorderRadius.circular(12),
@@ -87,12 +89,12 @@ class StudentsOutsideScreen extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const CircleAvatar(
-            radius: 24,
+          CircleAvatar(
+            radius: screenWidth * 0.06,
             backgroundColor: Colors.grey,
-            child: Icon(Icons.person, color: Colors.white),
+            child: Icon(Icons.person, color: Colors.white, size: screenWidth * 0.06),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: screenWidth * 0.03),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,55 +104,37 @@ class StudentsOutsideScreen extends StatelessWidget {
                     Text(
                       student["name"] ?? '',
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: screenWidth * 0.04,
                         fontWeight: FontWeight.bold,
                         color: colors.white,
                       ),
                     ),
                     const Spacer(),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02, vertical: screenWidth * 0.01),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: colors.green,
                       ),
-                      child: const Text(
+                      child: Text(
                         'Outside',
-                        style: TextStyle(color: Colors.white, fontSize: 12),
+                        style: TextStyle(color: Colors.white, fontSize: screenWidth * 0.03),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 6),
+                SizedBox(height: screenWidth * 0.015),
+                _buildInfoRow(screenWidth, Icons.meeting_room, student["room"] ?? '', colors),
+                SizedBox(height: screenWidth * 0.01),
+                _buildInfoRow(screenWidth, Icons.access_time, 'Left at: ${student["leftAt"]}', colors),
+                SizedBox(height: screenWidth * 0.01),
+                _buildInfoRow(screenWidth, Icons.location_on, 'Last seen: ${student["lastSeen"]}', colors),
+                SizedBox(height: screenWidth * 0.01),
                 Row(
                   children: [
-                    Icon(Icons.meeting_room, size: 14, color: colors.hintText),
-                    const SizedBox(width: 4),
-                    Text(student["room"] ?? '', style: TextStyle(color: colors.hintText)),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    Icon(Icons.access_time, size: 14, color: colors.hintText),
-                    const SizedBox(width: 4),
-                    Text('Left at: ${student["leftAt"]}', style: TextStyle(color: colors.hintText)),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    Icon(Icons.location_on, size: 14, color: colors.hintText),
-                    const SizedBox(width: 4),
-                    Text('Last seen: ${student["lastSeen"]}', style: TextStyle(color: colors.hintText)),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    Text('ID: ${student["id"]}', style: TextStyle(color: colors.hintText)),
+                    Text('ID: ${student["id"]}', style: TextStyle(color: colors.hintText, fontSize: screenWidth * 0.035)),
                     const Spacer(),
-                    Text(student["phone"] ?? '', style: TextStyle(color: colors.hintText)),
+                    Text(student["phone"] ?? '', style: TextStyle(color: colors.hintText, fontSize: screenWidth * 0.035)),
                   ],
                 ),
               ],
@@ -158,6 +142,16 @@ class StudentsOutsideScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildInfoRow(double screenWidth, IconData icon, String text, AppColors colors) {
+    return Row(
+      children: [
+        Icon(icon, size: screenWidth * 0.035, color: colors.hintText),
+        SizedBox(width: screenWidth * 0.01),
+        Text(text, style: TextStyle(color: colors.hintText, fontSize: screenWidth * 0.035)),
+      ],
     );
   }
 }

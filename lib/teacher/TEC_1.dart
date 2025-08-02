@@ -42,58 +42,63 @@ class TeacherDashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     const cardColor = Color(0xFF273348);
     const accentGreen = Color(0xFF34D17B);
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(20.0),
-          children: [
-            _buildHeader(),
-            const SizedBox(height: 24),
-            _buildStatsRow(cardColor),
-            const SizedBox(height: 30),
-            _buildMyGateSection(context, accentGreen),
-          ],
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(screenWidth * 0.05),
+          child: Column(
+            children: [
+              _buildHeader(screenWidth),
+              SizedBox(height: screenWidth * 0.06),
+              _buildStatsRow(context, cardColor),
+              SizedBox(height: screenWidth * 0.08),
+              _buildMyGateSection(context, accentGreen),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(double screenWidth) {
     return Row(
       children: [
-        // Removed Profile Avatar completely
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Hello Dr. Smith',
-              style: TextStyle(fontSize: 16, color: Colors.white70),
-            ),
-            Text(
-              _greeting,
-              style: const TextStyle(
-                  fontSize: 22,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Hello Dr. Smith',
+                style: TextStyle(fontSize: screenWidth * 0.04, color: Colors.white70),
+              ),
+              Text(
+                _greeting,
+                style: TextStyle(
+                  fontSize: screenWidth * 0.055,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
-          ],
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
         ),
-        const Spacer(),
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              _currentTime, // Show current time instead of sun icon & temp
-              style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
+              _currentTime,
+              style: TextStyle(
+                fontSize: screenWidth * 0.055,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
-            const SizedBox(height: 2),
-            const Text(
-              'Nagpur, Maharashtra', // Updated location
-              style: TextStyle(fontSize: 12, color: Colors.white60),
+            SizedBox(height: screenWidth * 0.005),
+            Text(
+              'Nagpur, Maharashtra',
+              style: TextStyle(fontSize: screenWidth * 0.03, color: Colors.white60),
             ),
           ],
         ),
@@ -101,33 +106,38 @@ class TeacherDashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildStatsRow(Color cardColor) {
-    return Row(
-      children: [
-        Expanded(
-          child: _StatCard(
-            color: cardColor,
-            icon: Icons.people_alt_outlined,
-            label: "Today's Classes",
-            value: '4',
-            iconColor: Colors.blue.shade300,
-          ),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: _StatCard(
-            color: cardColor,
-            icon: Icons.shield_outlined,
-            label: 'Pending Visitors',
-            value: '3',
-            iconColor: Colors.orange.shade300,
-          ),
-        ),
-      ],
+  Widget _buildStatsRow(BuildContext context, Color cardColor) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Row(
+          children: [
+            Expanded(
+              child: _StatCard(
+                color: cardColor,
+                icon: Icons.people_alt_outlined,
+                label: "Today's Classes",
+                value: '4',
+                iconColor: Colors.blue.shade300,
+              ),
+            ),
+            SizedBox(width: constraints.maxWidth * 0.04),
+            Expanded(
+              child: _StatCard(
+                color: cardColor,
+                icon: Icons.shield_outlined,
+                label: 'Pending Visitors',
+                value: '3',
+                iconColor: Colors.orange.shade300,
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
   Widget _buildMyGateSection(BuildContext context, Color accentGreen) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -135,30 +145,30 @@ class TeacherDashboardScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text(
+            Text(
               'My Gate',
               style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white),
+                fontSize: screenWidth * 0.045,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
             ),
             Chip(
-              label: const Text('3 Pending'),
+              label: Text('3 Pending', style: TextStyle(fontSize: screenWidth * 0.03)),
               labelStyle: const TextStyle(
                   color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12),
+                  fontWeight: FontWeight.bold),
               backgroundColor: accentGreen,
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              labelPadding: const EdgeInsets.symmetric(horizontal: 4),
+              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
+              labelPadding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             )
           ],
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: screenWidth * 0.04),
         ElevatedButton.icon(
-          icon: const Icon(Icons.shield_outlined, size: 22),
-          label: const Text('Manage Visitors'),
+          icon: Icon(Icons.shield_outlined, size: screenWidth * 0.055),
+          label: Text('Manage Visitors', style: TextStyle(fontSize: screenWidth * 0.04)),
           onPressed: () {
             Navigator.push(
               context,
@@ -169,11 +179,10 @@ class TeacherDashboardScreen extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             foregroundColor: Colors.white,
             backgroundColor: accentGreen,
-            minimumSize: const Size(double.infinity, 52),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+            minimumSize: Size(double.infinity, screenWidth * 0.13),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
             textStyle: const TextStyle(
-                fontSize: 16, fontWeight: FontWeight.w600, fontFamily: 'Inter'),
+                fontWeight: FontWeight.w600, fontFamily: 'Inter'),
           ),
         )
       ],
@@ -198,8 +207,9 @@ class _StatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(screenWidth * 0.04),
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(16),
@@ -207,17 +217,17 @@ class _StatCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: iconColor, size: 28),
-          const SizedBox(height: 12),
+          Icon(icon, color: iconColor, size: screenWidth * 0.07),
+          SizedBox(height: screenWidth * 0.03),
           Text(
             label,
-            style: const TextStyle(fontSize: 14, color: Colors.white70),
+            style: TextStyle(fontSize: screenWidth * 0.035, color: Colors.white70),
           ),
-          const SizedBox(height: 2),
+          SizedBox(height: screenWidth * 0.005),
           Text(
             value,
-            style: const TextStyle(
-                fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
+            style: TextStyle(
+                fontSize: screenWidth * 0.08, fontWeight: FontWeight.bold, color: Colors.white),
           ),
         ],
       ),

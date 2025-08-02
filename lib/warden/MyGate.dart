@@ -60,6 +60,8 @@ class MyGateVisitorsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -67,30 +69,30 @@ class MyGateVisitorsScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pop(context); // ✅ Works now
+            Navigator.pop(context);
           },
         ),
-        title: const Text(
+        title: Text(
           'My Gate - Visitors',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: screenWidth * 0.05, fontWeight: FontWeight.bold),
         ),
         centerTitle: false,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+          Padding(
+            padding: EdgeInsets.fromLTRB(screenWidth * 0.05, 0, screenWidth * 0.05, screenWidth * 0.05),
             child: Text(
               'Manage hostel visitor requests',
-              style: TextStyle(color: Color(0xFF9E9E9E), fontSize: 15),
+              style: TextStyle(color: const Color(0xFF9E9E9E), fontSize: screenWidth * 0.035),
             ),
           ),
           Expanded(
             child: ListView.separated(
               itemCount: _visitors.length,
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              separatorBuilder: (context, index) => const SizedBox(height: 16),
+              padding: EdgeInsets.fromLTRB(screenWidth * 0.04, 0, screenWidth * 0.04, screenWidth * 0.04),
+              separatorBuilder: (context, index) => SizedBox(height: screenWidth * 0.04),
               itemBuilder: (context, index) {
                 return _VisitorCard(visitor: _visitors[index]);
               },
@@ -113,9 +115,10 @@ class _VisitorCard extends StatelessWidget {
     const acceptColor = Color(0xFF34D17B);
     const rejectColor = Color(0xFFF44336);
     const secondaryTextColor = Color(0xFF9E9E9E);
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(screenWidth * 0.04),
       decoration: BoxDecoration(
         color: cardColor,
         borderRadius: BorderRadius.circular(16),
@@ -126,8 +129,8 @@ class _VisitorCard extends StatelessWidget {
           // Top Section
           Row(
             children: [
-              const CircleAvatar(radius: 24, backgroundColor: Color(0xFFE0E0E0)),
-              const SizedBox(width: 12),
+              CircleAvatar(radius: screenWidth * 0.06, backgroundColor: const Color(0xFFE0E0E0)),
+              SizedBox(width: screenWidth * 0.03),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,21 +139,21 @@ class _VisitorCard extends StatelessWidget {
                       children: [
                         Text(
                           visitor.name,
-                          style: const TextStyle(
-                            fontSize: 16,
+                          style: TextStyle(
+                            fontSize: screenWidth * 0.04,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
                         ),
                         const Spacer(),
-                        _buildTag(visitor.tag),
+                        _buildTag(screenWidth, visitor.tag),
                       ],
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: screenWidth * 0.01),
                     Text(
                       visitor.visitType,
-                      style: const TextStyle(
-                        fontSize: 14,
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.035,
                         color: secondaryTextColor,
                       ),
                     ),
@@ -159,45 +162,45 @@ class _VisitorCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: screenWidth * 0.03),
           // Middle Section
           Row(
             children: [
-              _buildDetailItem(Icons.location_on_outlined, visitor.location, secondaryTextColor),
-              const SizedBox(width: 24),
-              _buildDetailItem(Icons.access_time, visitor.time, secondaryTextColor),
+              _buildDetailItem(screenWidth, Icons.location_on_outlined, visitor.location, secondaryTextColor),
+              SizedBox(width: screenWidth * 0.06),
+              _buildDetailItem(screenWidth, Icons.access_time, visitor.time, secondaryTextColor),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: screenWidth * 0.04),
           // Action Buttons
           Row(
             children: [
               Expanded(
                 child: ElevatedButton.icon(
-                  icon: const Icon(Icons.check_circle, size: 18),
-                  label: const Text('Accept'),
+                  icon: Icon(Icons.check_circle, size: screenWidth * 0.045),
+                  label: Text('Accept', style: TextStyle(fontSize: screenWidth * 0.035)),
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
                     backgroundColor: acceptColor,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                    padding: EdgeInsets.symmetric(vertical: screenWidth * 0.03),
+                    textStyle: const TextStyle(fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: screenWidth * 0.03),
               Expanded(
                 child: OutlinedButton.icon(
-                  icon: const Icon(Icons.cancel, size: 18),
-                  label: const Text('Reject'),
+                  icon: Icon(Icons.cancel, size: screenWidth * 0.045),
+                  label: Text('Reject', style: TextStyle(fontSize: screenWidth * 0.035)),
                   onPressed: () {},
                   style: OutlinedButton.styleFrom(
                     foregroundColor: rejectColor,
                     side: const BorderSide(color: rejectColor, width: 1.5),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                    padding: EdgeInsets.symmetric(vertical: screenWidth * 0.03),
+                    textStyle: const TextStyle(fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
@@ -208,37 +211,37 @@ class _VisitorCard extends StatelessWidget {
     );
   }
 
-  Widget _buildTag(String tag) {
+  Widget _buildTag(double screenWidth, String tag) {
     final Map<String, Color> tagColors = {
       'parent': const Color(0xFF2196F3),
       'official': const Color(0xFF9C27B0),
     };
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.025, vertical: screenWidth * 0.01),
       decoration: BoxDecoration(
         color: tagColors[tag] ?? Colors.grey,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
         tag,
-        style: const TextStyle(
+        style: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
-          fontSize: 11,
+          fontSize: screenWidth * 0.027,
         ),
       ),
     );
   }
 
-  Widget _buildDetailItem(IconData icon, String text, Color color) {
+  Widget _buildDetailItem(double screenWidth, IconData icon, String text, Color color) {
     return Row(
       children: [
-        Icon(icon, color: color, size: 16),
-        const SizedBox(width: 6),
+        Icon(icon, color: color, size: screenWidth * 0.04),
+        SizedBox(width: screenWidth * 0.015),
         Text(
           text,
-          style: TextStyle(color: color, fontSize: 13, fontWeight: FontWeight.w500),
+          style: TextStyle(color: color, fontSize: screenWidth * 0.035, fontWeight: FontWeight.w500),
         ),
       ],
     );

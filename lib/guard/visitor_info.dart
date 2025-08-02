@@ -1,3 +1,4 @@
+// Refactored visitor_info.dart for responsiveness
 import 'package:flutter/material.dart';
 import 'package:pravesh_screen/guard/request2.dart';
 
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
       title: 'Visitor Information',
       theme: ThemeData(
         brightness: Brightness.dark,
-      scaffoldBackgroundColor: const Color.fromARGB(255, 52, 59, 72),
+        scaffoldBackgroundColor: const Color.fromARGB(255, 52, 59, 72),
         fontFamily: 'Inter',
       ),
       home: const VisitorInformationScreen(),
@@ -27,8 +28,7 @@ class VisitorInformationScreen extends StatefulWidget {
   const VisitorInformationScreen({super.key});
 
   @override
-  State<VisitorInformationScreen> createState() =>
-      _VisitorInformationScreenState();
+  State<VisitorInformationScreen> createState() => _VisitorInformationScreenState();
 }
 
 class _VisitorInformationScreenState extends State<VisitorInformationScreen> {
@@ -39,6 +39,7 @@ class _VisitorInformationScreenState extends State<VisitorInformationScreen> {
   Widget build(BuildContext context) {
     const secondaryTextColor = Color(0xFF9E9E9E);
     const accentGreen = Color(0xFF34D17B);
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: AppBar(
@@ -47,98 +48,93 @@ class _VisitorInformationScreenState extends State<VisitorInformationScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pop(context); // ✅ Back works now
+            Navigator.pop(context);
           },
         ),
-        title: const Text(
+        title: Text(
           'Visitor Information',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: screenWidth * 0.05, fontWeight: FontWeight.bold),
         ),
         centerTitle: false,
       ),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(left: 4.0, bottom: 24.0),
-            child: Text(
-              'Fill in visitor details and select teacher',
-              style: TextStyle(color: secondaryTextColor, fontSize: 15),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenWidth * 0.04),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: screenWidth * 0.01, bottom: screenWidth * 0.06),
+                  child: Text(
+                    'Fill in visitor details and select teacher',
+                    style: TextStyle(color: secondaryTextColor, fontSize: screenWidth * 0.035),
+                  ),
+                ),
+                _buildPhotoCapturedCard(screenWidth),
+                SizedBox(height: screenWidth * 0.06),
+                _buildLabel(screenWidth, 'Visitor Name'),
+                SizedBox(height: screenWidth * 0.03),
+                TextFormField(
+                  style: TextStyle(color: Colors.white, fontSize: screenWidth * 0.04),
+                  decoration: _buildInputDecoration(screenWidth, "Enter visitor's full name"),
+                ),
+                SizedBox(height: screenWidth * 0.05),
+                _buildLabel(screenWidth, 'Reason for Visit'),
+                SizedBox(height: screenWidth * 0.03),
+                TextFormField(
+                  maxLines: 4,
+                  style: TextStyle(color: Colors.white, fontSize: screenWidth * 0.04),
+                  decoration: _buildInputDecoration(screenWidth, "Enter the purpose of visit"),
+                ),
+                SizedBox(height: screenWidth * 0.05),
+                _buildLabel(screenWidth, 'Select Teacher to Meet'),
+                SizedBox(height: screenWidth * 0.03),
+                DropdownButtonFormField<String>(
+                  value: _selectedTeacher,
+                  items: _teachers.map((String teacher) {
+                    return DropdownMenuItem<String>(
+                      value: teacher,
+                      child: Text(teacher, style: TextStyle(fontSize: screenWidth * 0.04)),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
+                    setState(() {
+                      _selectedTeacher = newValue;
+                    });
+                  },
+                  style: TextStyle(color: Colors.white, fontSize: screenWidth * 0.04, fontFamily: 'Inter'),
+                  icon: Icon(Icons.keyboard_arrow_down_rounded, color: Colors.white70, size: screenWidth * 0.07),
+                  decoration: _buildInputDecoration(screenWidth, "Choose a teacher"),
+                  dropdownColor: const Color(0xFF273348),
+                ),
+                SizedBox(height: screenWidth * 0.1),
+                _buildSendRequestButton(screenWidth, accentGreen),
+                SizedBox(height: screenWidth * 0.06),
+              ],
             ),
-          ),
-
-          // Photo card
-          _buildPhotoCapturedCard(),
-          const SizedBox(height: 24),
-
-          // Visitor Name
-          _buildLabel('Visitor Name'),
-          const SizedBox(height: 12),
-          TextFormField(
-            style: const TextStyle(color: Colors.white, fontSize: 16),
-            decoration: _buildInputDecoration("Enter visitor's full name"),
-          ),
-          const SizedBox(height: 20),
-
-          // Reason
-          _buildLabel('Reason for Visit'),
-          const SizedBox(height: 12),
-          TextFormField(
-            maxLines: 4,
-            style: const TextStyle(color: Colors.white, fontSize: 16),
-            decoration: _buildInputDecoration("Enter the purpose of visit"),
-          ),
-          const SizedBox(height: 20),
-
-          // Teacher Selection
-          _buildLabel('Select Teacher to Meet'),
-          const SizedBox(height: 12),
-          DropdownButtonFormField<String>(
-            value: _selectedTeacher,
-            items: _teachers.map((String teacher) {
-              return DropdownMenuItem<String>(
-                value: teacher,
-                child: Text(teacher),
-              );
-            }).toList(),
-            onChanged: (newValue) {
-              setState(() {
-                _selectedTeacher = newValue;
-              });
-            },
-            style: const TextStyle(
-                color: Colors.white, fontSize: 16, fontFamily: 'Inter'),
-            icon: const Icon(Icons.keyboard_arrow_down_rounded,
-                color: Colors.white70, size: 28),
-            decoration: _buildInputDecoration("Choose a teacher"),
-            dropdownColor: const Color(0xFF273348),
-          ),
-          const SizedBox(height: 40),
-
-          // Send Button
-          _buildSendRequestButton(accentGreen),
-          const SizedBox(height: 24),
-        ],
+          );
+        },
       ),
     );
   }
 
-  Widget _buildLabel(String label) {
+  Widget _buildLabel(double screenWidth, String label) {
     return RichText(
       text: TextSpan(
         text: label,
-        style: const TextStyle(
+        style: TextStyle(
           color: Colors.white,
-          fontSize: 14,
+          fontSize: screenWidth * 0.035,
           fontWeight: FontWeight.w600,
           fontFamily: 'Inter',
         ),
-        children: const [
+        children: [
           TextSpan(
             text: ' *',
             style: TextStyle(
-              color: Color(0xFFF44336),
-              fontSize: 14,
+              color: const Color(0xFFF44336),
+              fontSize: screenWidth * 0.035,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -147,9 +143,9 @@ class _VisitorInformationScreenState extends State<VisitorInformationScreen> {
     );
   }
 
-  Widget _buildPhotoCapturedCard() {
+  Widget _buildPhotoCapturedCard(double screenWidth) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(screenWidth * 0.04),
       decoration: BoxDecoration(
         color: const Color(0xFF273348),
         borderRadius: BorderRadius.circular(14),
@@ -157,16 +153,16 @@ class _VisitorInformationScreenState extends State<VisitorInformationScreen> {
       child: Row(
         children: [
           Container(
-            width: 54,
-            height: 54,
+            width: screenWidth * 0.135,
+            height: screenWidth * 0.135,
             decoration: BoxDecoration(
               color: const Color(0xFFE0E0E0),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Center(
               child: Container(
-                width: 12,
-                height: 12,
+                width: screenWidth * 0.03,
+                height: screenWidth * 0.03,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: Colors.white.withOpacity(0.3),
@@ -174,23 +170,23 @@ class _VisitorInformationScreenState extends State<VisitorInformationScreen> {
               ),
             ),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: screenWidth * 0.04),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               Text(
                 'Photo Captured',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: screenWidth * 0.04,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
               ),
-              SizedBox(height: 4),
+              SizedBox(height: screenWidth * 0.01),
               Text(
                 'Visitor identification photo',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: screenWidth * 0.035,
                   color: Colors.white70,
                 ),
               ),
@@ -201,10 +197,10 @@ class _VisitorInformationScreenState extends State<VisitorInformationScreen> {
     );
   }
 
-  Widget _buildSendRequestButton(Color accentGreen) {
+  Widget _buildSendRequestButton(double screenWidth, Color accentGreen) {
     return ElevatedButton.icon(
-      icon: const Icon(Icons.send_rounded, size: 20),
-      label: const Text('Send Request to Teacher'),
+      icon: Icon(Icons.send_rounded, size: screenWidth * 0.05),
+      label: Text('Send Request to Teacher', style: TextStyle(fontSize: screenWidth * 0.04)),
       onPressed: () {
         Navigator.push(
           context,
@@ -214,10 +210,9 @@ class _VisitorInformationScreenState extends State<VisitorInformationScreen> {
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.white,
         backgroundColor: accentGreen,
-        minimumSize: const Size(double.infinity, 54),
+        minimumSize: Size(double.infinity, screenWidth * 0.13),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
         textStyle: const TextStyle(
-          fontSize: 16,
           fontWeight: FontWeight.bold,
           fontFamily: 'Inter',
         ),
@@ -225,13 +220,13 @@ class _VisitorInformationScreenState extends State<VisitorInformationScreen> {
     );
   }
 
-  InputDecoration _buildInputDecoration(String hintText) {
+  InputDecoration _buildInputDecoration(double screenWidth, String hintText) {
     return InputDecoration(
       hintText: hintText,
       hintStyle: const TextStyle(color: Colors.white54),
       filled: true,
       fillColor: const Color(0xFF273348),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+      contentPadding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenWidth * 0.04),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
         borderSide: BorderSide(
